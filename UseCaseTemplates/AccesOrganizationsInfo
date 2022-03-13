@@ -1,0 +1,22 @@
+Use Case Template 3 :
+
+Name : Access to organization's informaions.
+.
+Brief description : The user can access to CNEF's informations.
+
+Players : Admin,User, DB.
+
+Precondition: Logged in successfully.
+                   
+Basic Flow : 
+1. Scroll on information's travels to be informed.
+2. Scroll on information's shabbatot to be informed.
+3. Click on torah's lesson to read. 
+4. Click on picture of travel to subscribe/pay.
+5. Click on picture on shabbat's place to subscribe/pay.
+
+Alternative flow :  He can access to the informations in the sidebar navigation menu.
+
+Exception flow : ------------------.
+
+Post Conditions : He's redirected to the information that he's clicked on.
