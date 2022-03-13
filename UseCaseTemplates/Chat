@@ -1,7 +1,7 @@
 Use Case Template 4 :
 
 Name : Chat.
-.
+
 Brief description : The user can chat with an admin.
 
 Players : Admin,User.
@@ -16,4 +16,4 @@ Alternative flow :  He can access to the Chat in the sidebar navigation menu.
 
 Exception flow : ------------------.
 
-Post Conditions : He's redirected to the CNEF's informatons when he's finished to discuss.
+Post Conditions : He's redirected to the CNEF's informations when he's finished to discuss.
