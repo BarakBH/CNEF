@@ -1,1 +1,22 @@
-Use Case 
+Use Case Template 1 :
+
+Name : Register.
+
+Brief description : The user have ability to register to application.
+
+Players : Admin, User, DB.
+
+Precondition : - - - - - - - - - - - - -
+                   
+Basic Flow : 
+1. Click on register button.
+2. Register form screens pops up.
+3. Fill all the informations of the form.
+4. Submit the register button.
+
+
+Alternative flow : - - - - - - - - - - - - -
+
+Exception flow : Email adress already exist.
+
+Post Conditions : The user will receive an email confirmation.
