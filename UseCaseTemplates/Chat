@@ -1,0 +1,19 @@
+Use Case Template 4 :
+
+Name : Chat.
+.
+Brief description : The user can chat with an admin.
+
+Players : Admin,User.
+
+Precondition: Logged in successfully.
+                   
+Basic Flow : 
+1. Click on the Chat logo.
+2. Discuss with an admin to ask a question
+
+Alternative flow :  He can access to the Chat in the sidebar navigation menu.
+
+Exception flow : ------------------.
+
+Post Conditions : He's redirected to the CNEF's informatons when he's finished to discuss.
