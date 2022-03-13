@@ -1,0 +1,19 @@
+Functional requirements :
+1) The main page must contains different informations, events, Shabbat....
+ 
+2) The user have possibility to pay with Paypal.
+
+3) The application must contain possibility to subscribe to the events. 
+
+4) The application must contain Olim's informations/advantages.
+
+5) The application must contain menu with domain's list with appropriate students.
+
+Unfunctional requirements :
+
+1) CNEF personnel must to be the admin. 
+
+2) After feeling the MCQ the client have to receive a diagram with all optional orientations.
+
+3) The user must receive a fastest answer from the chat : 24 hours maximum. 
+
