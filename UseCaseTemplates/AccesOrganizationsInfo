@@ -1,10 +1,10 @@
 Use Case Template 3 :
 
 Name : Access to organization's informaions.
-.
+
 Brief description : The user can access to CNEF's informations.
 
-Players : Admin,User, DB.
+Players : Admin,User, D.B.
 
 Precondition: Logged in successfully.
                    
