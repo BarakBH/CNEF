@@ -1,0 +1,28 @@
+Use Case Template 2 :
+
+Name : Login.
+
+Brief description : The user have ability to login to application.
+
+Players : Admin, User, DB.
+
+Precondition :Enter in the CNEF's application.
+                   
+Basic Flow : 
+1. Click on login button.
+2. Login screens pops up.
+3. Fill in all user informations. 
+4. Press login.
+5. Redirection to main page of the application.
+
+Alternative flow : 
+1. Press forgot password.
+2. Redirection to confim email page.
+3. The user needs to fill the email for confirm.
+4. The user receive a link to reset password page.
+5. Fill-in new password.
+6. Submit new password. 
+
+Exception flow : User name/Password wrong.
+
+Post Conditions : The user has been redirected to the main page app.
