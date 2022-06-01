@@ -17,7 +17,8 @@ class FireStoreMethods {
     try {
       String photoUrl =
       await StorageMethods().uploadImageToStorage('posts', file, true);
-      String postId = const Uuid().v1(); // creates unique id based on time
+      const uuid = Uuid();
+      String postId = uuid.v1(); // creates unique id based on time
       Post post = Post(
         description: description,
         uid: uid,

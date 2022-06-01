@@ -1,5 +1,4 @@
 
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -208,6 +207,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         ),
         centerTitle: false,
         actions: <Widget>[
+          (_descriptionController.text!='')?
           TextButton(
             onPressed: ()=>postImage(loggedUser.uid,"assets/user_image.png"),
             child: const Text(
@@ -218,7 +218,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   fontSize: 16.0),
             ),
           )
+          :TextButton(
+        onPressed: (){},
+        child: const Text(
+          "Post",
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0),
+        ),
+      )
         ],
+
       ),
       // POST FORM
        body: Column(
