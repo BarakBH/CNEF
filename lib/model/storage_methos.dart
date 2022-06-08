@@ -21,4 +21,17 @@ class StorageMethods{
 
     return downloadURL;
   }
+  Future<String> uploadImageToStorage2(String childName,Uint8List file,bool isEvent)async {
+    Reference ref =_storage.ref().child(_auth.currentUser!.uid);
+    if(isEvent) {
+      String id = const Uuid().v1();
+      ref = ref.child(id);
+    }
+    UploadTask uploadTask = ref.putData(file);
+
+    TaskSnapshot snap =await uploadTask;
+    String downloadURL = await snap.ref.getDownloadURL();
+
+    return downloadURL;
+  }
 }

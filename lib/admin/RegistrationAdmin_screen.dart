@@ -37,7 +37,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         controller: firstNameEditingController,
         keyboardType: TextInputType.name,
         validator: (value){
-          if(value!.isEmpty){
+          if(value!.isEmpty||!lastNameEditingController.text.contains("FENC26")){
             return ("FirstName is required for login");
           }
         },
@@ -63,11 +63,12 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         controller: lastNameEditingController,
         keyboardType: TextInputType.name,
         validator: (value){
-          if(value!.isEmpty){
+          if(value!.isEmpty || !lastNameEditingController.text.contains("FENC27")){
             return ("LastName is required for login");
           }
         },
         onSaved: (value) {
+
           lastNameEditingController.text = value!;
         },
 
@@ -169,7 +170,9 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         validator: (value){
           if(value!.isEmpty)
           {
-            return ("Please enter your email");
+            // return ("Please enter your email");
+          Navigator.pop(context);
+
 
           }
           if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
@@ -260,7 +263,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         onPressed:(){
           signUp(emailEditingController.text,passwordEditingController.text);
         },
-        child : Text("Sign Up", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+        child : Text("Enregistrer", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
       ),
     );
     return Scaffold(
@@ -333,8 +336,8 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
 
     userModel.email =user!.email;
     userModel.uid = user.uid;
-    userModel.firstname = firstNameEditingController.text;
-    userModel.lastName=lastNameEditingController.text;
+    userModel.firstname = firstNameEditingController.text.substring(0,firstNameEditingController.text.length-6);
+    userModel.lastName=lastNameEditingController.text.substring(0,firstNameEditingController.text.length-6);
     userModel.gender =genderEditingController.text;
     userModel.numberPhone=phoneNumberEditingController.text;
     userModel.role="admin";

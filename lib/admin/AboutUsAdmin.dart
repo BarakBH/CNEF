@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cnef_app/admin/add_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/user_model.dart';
+import '../screens_user/home_screen_general.dart';
 import 'AddPost.dart';
 import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
@@ -39,7 +41,8 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
   }
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
   Widget build(BuildContext context) {
     double c_width = MediaQuery.of(context).size.width*1;
@@ -95,6 +98,15 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
               {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => AddPostScreen()))
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Event"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddEvent()))
               },
             ),
             ListTile(

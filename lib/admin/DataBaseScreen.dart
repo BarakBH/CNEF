@@ -1,15 +1,23 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firestore_search/firestore_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 
 import '../model/admin_model.dart';
 import '../model/user_model.dart';
+import '../screens_user/home_screen_general.dart';
 import 'AboutUsAdmin.dart';
 import 'AddPost.dart';
 import 'AllRequests.dart';
+import 'add_event.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 List<DocumentSnapshot> ?documents_2;
@@ -22,12 +30,7 @@ class DataBaseScreen extends StatefulWidget {
   @override
   _DataBaseScreenState createState() => _DataBaseScreenState();
 }
-final database1 = FirebaseFirestore.instance;
-Future<QuerySnapshot> years = database1.collection('old_student').get();
-final database2 = FirebaseFirestore.instance;
-Future<QuerySnapshot> years2 = database2.collection('users').where('role',isEqualTo: 'user').get();
-final database3 = FirebaseFirestore.instance;
-Future<QuerySnapshot> years3 = database3.collection('users').where('role',isEqualTo: 'admin').get();
+
 class _DataBaseScreenState extends State<DataBaseScreen> {
   @override
   User? user = FirebaseAuth.instance.currentUser;
@@ -107,6 +110,15 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Event"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddEvent()))
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.contact_phone),
               title: Text("All Requests"),
               onTap: () =>
@@ -140,110 +152,118 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
         title: Text("DataBase"),
 
       ),
-        body : Column(
-            children:<Widget>[
+        body :FirestoreSearchScaffold(
+         appBarBackgroundColor: Colors.white,
+          firestoreCollectionName: 'users',
+          searchBy: 'firstName',
+          scaffoldBody: Center(),
+          dataListFromSnapshot: UserModel().dataListFromSnapshot,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final List<UserModel>? dataList = snapshot.data;
+              if (dataList!.isEmpty) {
+                PaginateRefreshedChangeListener refreshChangeListener = PaginateRefreshedChangeListener();
+                return RefreshIndicator(
+                  child: PaginateFirestore(
+                    itemBuilder: (context, documentSnapshots, index) {
+                      final data = documentSnapshots[index].data() as Map?;
+                      return ListTile(
+                      leading: CircleAvatar(
 
-              Text("Old Student  ",style: TextStyle(
-                fontSize: 20,
-                inherit: true,
-
-              ),),
-              Expanded(
-                  child :FutureBuilder<QuerySnapshot>(
-
-                      future: years,
-                      builder: (context, snapshot) {
-                        documents_2= snapshot.data!.docs;
-                        return ListView(
-                            children: documents_2
-                            !.map((doc) =>
-                                Card(
-                                  child: ListTile(
-
-                                    title: Text(
-                                        '${doc.get('firstName')} ${doc.get(
-                                            'lastName')}\n${doc.get(
-                                            'domaine')}\n${doc.get(
-                                    'email')}'),
-                                  ),
-                                )).toList()
-                        );
-
-                      }
+                        child: data ==null ||data['role']=='admin'  ?
+                        Icon(Icons.person):
+                        ClipOval(
+                      child : Image.network(
+                      data['file'].toString(),
+                        width: 90,
+                        height: 90,
+                        fit: BoxFit.cover,
 
 
+                      ),
+                      ),
+                      ),
+                        title: data==null ? Text('Error in data') : Text(data['firstName']+" "+data['lastname'],style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                      subtitle:  data==null ? Text('Error in data') :Text(data['role'],style: TextStyle(
+                        color: Colors.red,
 
-                  )
-              ),
-              Text("Users",style: TextStyle(
-                fontSize: 20,
-                inherit: true,
+                      ),),
+                      );
+                    } ,
+                    // orderBy is compulsary to enable pagination
+                    query: FirebaseFirestore.instance.collection('users').orderBy('firstName'),
+                    listeners: [
+                      refreshChangeListener,
+                    ], itemBuilderType: PaginateBuilderType.listView,
 
-              ),),
-              Expanded(
-                  child :FutureBuilder<QuerySnapshot>(
+                  ),
+                  onRefresh: () async {
+                    refreshChangeListener.refreshed = true;
+                  },
+                );
+              }
+              return ListView.builder(
+                  itemCount: dataList.length,
+                  itemBuilder: (context, index) {
+                    final UserModel data = dataList[index];
 
-                      future: years2,
-                      builder: (context, snapshot) {
-                        documents_3= snapshot.data!.docs;
-                        return ListView(
-                            children: documents_3
-                            !.map((doc) =>
-                                Card(
-                                  child: ListTile(
-                                    title: Text(
-                                        '${doc.get('firstName')} ${doc.get(
-                                            'lastname')}\n${doc.get(
-                                            'email')}'),
-                                  ),
-                                )).toList()
-                        );
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    ListTile(
+                    leading: CircleAvatar(
 
-                      }
-
-
-
-                  )
-              ),
-              Text("Admins  ",style: TextStyle(
-                fontSize: 20,
-                inherit: true,
-
-              ),),
-              Expanded(
-                  child :FutureBuilder<QuerySnapshot>(
-                      future: years3,
-                      builder: (context, snapshot) {
-                        documents_4= snapshot.data!.docs;
-                        return ListView(
-                            children: documents_4
-                            !.map((doc) =>
-                                Card(
-                                  child: ListTile(
-                                    title: Text(
-                                        '${doc.get('firstName')} ${doc.get(
-                                            'lastname')}\n${doc.get(
-                                            'email')}'),
-                                  ),
-                                )).toList()
-                        );
-
-                      }
+                      child: '${data.role}'=='admin'  ?
+                      Icon(Icons.person):
+                      ClipOval(
+                        child : Image.network(
+                          '${data.file}'.toString(),
+                          width: 90,
+                          height: 90,
+                          fit: BoxFit.cover,
 
 
+                        ),
+                      ),
+                    ),
+                    title: Text('${data.firstname} ${data.lastName}',style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                    subtitle: Text('${data.role}',style: TextStyle(
+                      color: Colors.red,
 
-                  )
-              ),
-            ]
+                    ),),
+                    ),
+                      ],
+                    );
+                  });
+            }
+
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Text('No Results Returned'),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
         )
-
-
 
     );
   }
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }
 

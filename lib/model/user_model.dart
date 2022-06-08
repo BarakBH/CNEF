@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/model/storage_methos.dart';
 
 class UserModel{
@@ -60,7 +61,31 @@ class UserModel{
     };
   }
 
+  List<UserModel> dataListFromSnapshot(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((snapshot) {
+      final Map<String, dynamic> map =
+      snapshot.data() as Map<String, dynamic>;
+
+      return UserModel(
+        uid: map['uid'],
+        file:map['file'],
+        email:map['email'],
+        firstname: map['firstName'],
+        lastName: map['lastname'],
+        gender: map['gender'],
+        dateBirth: map['dateBirth'],
+        yearOfAlyah: map['yearOfAlyah'],
+        status: map['status'],
+        id: map['id'],
+        numberPhone:map['numberPhone'],
+        role:map['role'],
 
 
-
+      );
+    }).toList();
+  }
 }
+
+
+
+

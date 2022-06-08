@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:cnef_app/screens_user/FamiliesContact_screen.dart';
 import 'package:flutter/services.dart';
 
+import '../admin/event_card.dart';
 import '../admin/post_card.dart';
 import '../chat_states/home_page_chat.dart';
 import '../model/user_model.dart';
@@ -13,6 +14,7 @@ import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'Requestfund_screen.dart';
+import 'home_screen_general.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -43,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> imgList = [
-      "assets/event1_cnef.jpg",
+      "cnef_logo",
     ];
     final width = MediaQuery.of(context).size.width;
     const webScreenSize = 600;
@@ -129,11 +131,31 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       appBar:AppBar(
 
-      title :Text("                 A la une"),
+      title :Text("A LA UNE"),
+        centerTitle: true,
+        actions: [
+          Builder(
+            builder: (context) =>
+                TextButton(
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+
+                  child : Text(
+                    "Events",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0
+                    ),
+
+                  ),
+                ),
+          ),
+        ],
 
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: Colors.lightBlue,
         child : Icon(Icons.chat_sharp),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomePage()));
@@ -168,32 +190,49 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       endDrawer :
-      CarouselSlider(
+      StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('events').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-        options: CarouselOptions(
-          height: MediaQuery.of(context).size.width,
-          viewportFraction: 1.0,
-          enlargeCenterPage: true,
+          return CarouselSlider.builder(
 
-          // autoPlay: false,
-        ),
-        items: imgList
-            .map((item) => Container(
-          child : Center(
-              child: Image.asset(
-                item,
-                fit: BoxFit.cover,
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.width,
+              viewportFraction: 1.0,
+              enlargeCenterPage: true,
 
-              )),
-        ))
-            .toList(),
+              // autoPlay: false,
+            ),
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index,momo) =>
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: width > webScreenSize ? width * 0.3 : 0,
+                    vertical: width > webScreenSize ? 15 : 0,
+                  ),
+                  child: EventCard(
+                    snap: snapshot.data!.docs[index].data(),
+                  ),
+                ),
+          );
+        },
+
       ),
+
+
 
     );
   }
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }
 

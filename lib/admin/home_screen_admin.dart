@@ -3,18 +3,18 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/admin/AboutUsAdmin.dart';
 import 'package:cnef_app/admin/AddPost.dart';
-import 'package:cnef_app/admin/login_screen_admin.dart';
+import 'package:cnef_app/admin/add_someone.dart';
+import 'package:cnef_app/admin/appointment_screen_admin.dart';
+import 'package:cnef_app/admin/event_card.dart';
 import 'package:cnef_app/admin/post_card.dart';
-import 'package:cnef_app/model/admin_model.dart';
 import 'package:cnef_app/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import '../chat_screens/chats.dart';
 import '../chat_states/home_page_chat.dart';
+import '../screens_user/home_screen_general.dart';
 import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
+import 'add_event.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
   const HomeScreenAdmin({Key? key}) : super(key: key);
@@ -43,9 +43,6 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
     });
   }
   Widget build(BuildContext context) {
-    final List<String> imgList = [
-      "assets/event1_cnef.jpg",
-    ];
     final width = MediaQuery.of(context).size.width;
     const webScreenSize = 600;
 
@@ -96,6 +93,33 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Event"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddEvent()))
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Someone"),
+              onTap: () =>
+              {
+              Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AddSomeone()))
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.calendar_today_outlined),
+              title: Text("Rendez-vous-Conseillere"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AppointmentScreen()))
+              },
+            ),
+            ListTile(
               leading : Icon(Icons.contact_phone),
               title : Text("All Requests"),
               onTap: ()=>{
@@ -126,7 +150,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
 
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: Colors.redAccent,
         child : Icon(Icons.chat_sharp),
         onPressed: (){
           Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomePage()));
@@ -162,34 +186,49 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
 
         },
       ),
-         endDrawer :
-         CarouselSlider(
+      endDrawer :
+      StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('events').snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-          options: CarouselOptions(
-            height: MediaQuery.of(context).size.width,
-            viewportFraction: 1.0,
-            enlargeCenterPage: true,
+          return CarouselSlider.builder(
 
-            // autoPlay: false,
-          ),
-          items: imgList
-              .map((item) => Container(
-            child : Center(
-                child: Image.asset(
-                  item,
-                  fit: BoxFit.cover,
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.width,
+              viewportFraction: 1.0,
+              enlargeCenterPage: true,
 
-                )),
-          ))
-              .toList(),
-        ),
+              // autoPlay: false,
+            ),
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index,momo) =>
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: width > webScreenSize ? width * 0.29 : 0,
+                    vertical: width > webScreenSize ? 15 : 0,
+                  ),
+                  child: EventCard(
+                    snap: snapshot.data!.docs[index].data(),
+                  ),
+                ),
+          );
+        },
 
+      ),
 
     );
 
   }
+
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }

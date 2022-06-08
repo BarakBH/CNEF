@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:cnef_app/model/user_model.dart' as model;
 
 import 'firestore_methods.dart';
@@ -22,7 +24,7 @@ class PostCard extends StatefulWidget {
   @override
   State<PostCard> createState() => _PostCardState();
 }
-
+DateFormat ?dateFormat;
 class _PostCardState extends State<PostCard> {
   int commentLen = 0;
   bool isLikeAnimating = false;
@@ -31,6 +33,8 @@ class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting();
+    dateFormat= DateFormat.yMMMd('fr');
   }
 
 
@@ -196,7 +200,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                  Container(
                   child: Text(
-                    DateFormat.yMMMd()
+                    dateFormat!
                         .format(widget.snap['datePublished'].toDate()),
                     style: const TextStyle(
                       color: secondaryColor,

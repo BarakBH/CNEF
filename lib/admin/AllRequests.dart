@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/user_model.dart';
+import '../screens_user/home_screen_general.dart';
 import 'AboutUsAdmin.dart';
 import 'AddPost.dart';
 import 'DataBaseScreen.dart';
+import 'add_event.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 List<DocumentSnapshot> ?documents_requests;
@@ -45,7 +47,8 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
 }
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 
   @override
@@ -101,6 +104,15 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
               {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => AddPostScreen()))
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Event"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddEvent()))
               },
             ),
             ListTile(

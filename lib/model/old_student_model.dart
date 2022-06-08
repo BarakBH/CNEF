@@ -1,4 +1,6 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class OldStudentModel {
   String? uid;
   String? email;
@@ -14,7 +16,7 @@ class OldStudentModel {
       uid: map['uid'],
       email:map['email'],
       firstname: map['firstName'],
-      lastName: map['lastname'],
+      lastName: map['lastName'],
       numberPhone:map['numberPhone'],
       domaine:map['domaine'],
       description:map['description'],
@@ -30,12 +32,29 @@ class OldStudentModel {
       'uid': uid,
       'email': email,
       'firstName': firstname,
-      'lastname': lastName,
+      'lastName': lastName,
       'numberPhone': numberPhone,
       'domaine': domaine,
       'description': description,
 
 
     };
+  }
+  List<OldStudentModel> dataListFromSnapshot(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((snapshot) {
+      final Map<String, dynamic> map =
+      snapshot.data() as Map<String, dynamic>;
+
+      return OldStudentModel(
+        uid: map['uid'],
+        email:map['email'],
+        firstname: map['firstName'],
+        lastName: map['lastName'],
+        numberPhone:map['numberPhone'],
+        domaine:map['domaine'],
+        description:map['description'],
+
+      );
+    }).toList();
   }
 }

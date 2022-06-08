@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/model/old_student_model.dart';
+import 'package:cnef_app/screens_user/home_screen_general.dart';
 import 'package:cnef_app/screens_user/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firestore_search/firestore_search.dart';
 import 'package:flutter/material.dart';
 import 'package:cnef_app/screens_user/FamiliesContact_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 import 'dart:developer';
 
 import '../model/user_model.dart';
@@ -41,10 +45,6 @@ class _ContactStudentState extends State<ContactStudent> {
 
       });
     });
-
-
-
-
 
 
 
@@ -129,71 +129,67 @@ class _ContactStudentState extends State<ContactStudent> {
         appBar:AppBar(
           title :Text("Contact Student"),
         ),
-        body : Column(
-            children:<Widget>[
-              // Container(
-              //   margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              //   child: TextField(
-              //     controller: controller,
-              //     decoration: InputDecoration(
-              //       icon:const Icon(Icons.search),
-              //       hintText: "Domaine",
-              //       border:OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(30),
-              //         borderSide: const BorderSide(color:Colors.lightBlue),
-              //       ),
-              //
-              //     ),
-              //     onChanged: searchOldStudent ,
-              //   ),
-              // ),
+        body : FirestoreSearchScaffold(
+          appBarBackgroundColor: Colors.white,
+          firestoreCollectionName: 'old_student',
+          searchBy: 'domaine',
+          scaffoldBody: Center(),
+          dataListFromSnapshot: OldStudentModel().dataListFromSnapshot,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final List<OldStudentModel>? dataList = snapshot.data;
+              if (dataList!.isEmpty) {
+                return const Center(
+                  child: Text('Pas de resulat'),
+                );
+              }
+              return ListView.builder(
+                  itemCount: dataList.length,
+                  itemBuilder: (context, index) {
+                    final OldStudentModel data = dataList[index];
 
-              Expanded(
-                  child :FutureBuilder<QuerySnapshot>(
-                      future: years,
-                      builder: (context, snapshot) {
-                        documents_2= snapshot.data!.docs;
-                        return ListView(
-                            children: documents_2
-                            !.map((doc) =>
-                                Card(
-                                  child: ListTile(
-                                    title: Text(
-                                        '${doc.get('firstName')} ${doc.get(
-                                            'lastName')} \nDomaine : ${doc.get(
-                                            'domaine')}\n${doc.get(
-                                            'description')}\nContact me : ${doc.get(
-                                            'email')}'),
-                                  ),
-                                )).toList()
-                        );
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
 
-                      }
+                          title: Text('${data.domaine}',style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          subtitle: Text('${data.firstname} ${data.lastName}\n${data.description}\nContactez moi :\nPar e-mail  ${data.email} ou par telephone :  ${data.numberPhone}',style: TextStyle(
+                            fontSize: 15,
 
+                          ),),
+                        ),
+                      ],
+                    );
+                  });
+            }
 
-
-                  )
-              ),
-            ]
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Text('No Results Returned'),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
         )
-
 
     );
 
   }
 
-  void searchOldStudent(String query) {
-    final suggestions = documents_2?.where((doc){
-      final  domain =doc.get('domaine').toString().toLowerCase();
-      final input = query.toLowerCase();
-      return domain.contains(input);
-    }).toList();
-    setState(() =>documents_2=suggestions);
-  }
-  Future<void> logout(BuildContext context) async{
+    Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-  }
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));  }
 
 }
 

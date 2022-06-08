@@ -18,6 +18,7 @@ import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'home_screen.dart';
+import 'home_screen_general.dart';
 bool check = true;
 String? s ;
 
@@ -342,6 +343,7 @@ class _RequestFundsState extends State<RequestFunds> {
 
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }

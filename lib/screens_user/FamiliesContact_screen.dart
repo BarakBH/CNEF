@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:intl/intl.dart';
 
 import '../model/user_model.dart';
@@ -16,6 +17,7 @@ import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'Requestfund_screen.dart';
 import 'home_screen.dart';
+import 'home_screen_general.dart';
 class FamiliesContact extends StatefulWidget {
   const FamiliesContact({Key? key}) : super(key: key);
 
@@ -30,12 +32,13 @@ class _FamiliesContactState extends State<FamiliesContact> {
   final descriptionEditingController= new TextEditingController();
   final locationEditingConroller = new TextEditingController();
 
-
+  DateFormat ?dateFormat;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInuser = UserModel();
   void initState() {
     // TODO: implement initState
     super.initState();
+
     FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
@@ -356,7 +359,6 @@ class _FamiliesContactState extends State<FamiliesContact> {
               status_religionField,
               SizedBox(height : 20),
               locationField,
-
               SizedBox(height : 20),
               descriptionField,
               SizedBox(height : 20),
@@ -380,10 +382,7 @@ class _FamiliesContactState extends State<FamiliesContact> {
 
     );
   }
-  Future<void> logout(BuildContext context) async{
-    await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-  }
+
   postDetailsToFireStore() async {
     //calling our firebase
     // calling our user model;
@@ -409,5 +408,10 @@ class _FamiliesContactState extends State<FamiliesContact> {
 
 
 
+  }
+  Future<void> logout(BuildContext context) async{
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }

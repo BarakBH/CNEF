@@ -11,9 +11,11 @@ import 'package:image_picker/image_picker.dart';
 
 import '../model/admin_model.dart';
 import '../model/user_model.dart';
+import '../screens_user/home_screen_general.dart';
 import 'AboutUsAdmin.dart';
 import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
+import 'add_event.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 class AddPostScreen extends StatefulWidget {
@@ -44,6 +46,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         _file,
         uid!,
         profImage!,
+
       );
 
   }
@@ -171,6 +174,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Event"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddEvent()))
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.contact_phone),
               title: Text("All Requests"),
               onTap: () =>
@@ -295,6 +307,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
   Future<void> logout(BuildContext context) async{
     await FirebaseAuth.instance.signOut();
-    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }
