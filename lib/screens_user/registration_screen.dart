@@ -353,7 +353,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             return("Please Enter a valid email");
 
           }
-          return null;
+
           //reg expression for email validation
 
         },

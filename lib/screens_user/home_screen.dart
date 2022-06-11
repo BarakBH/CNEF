@@ -1,10 +1,20 @@
 
+import 'dart:ui';
+
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cnef_app/chat_screens/chat_detail.dart';
+import 'package:cnef_app/chat_states/home_page_user_chat.dart';
+import 'package:cnef_app/screens_user/profile_page_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cnef_app/screens_user/FamiliesContact_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../admin/event_card.dart';
 import '../admin/post_card.dart';
@@ -14,8 +24,11 @@ import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'Requestfund_screen.dart';
+import 'faire_un_don_autre.dart';
 import 'home_screen_general.dart';
+
 class HomeScreen extends StatefulWidget {
+ // static int num =0;
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +37,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   User? user = FirebaseAuth.instance.currentUser;
+
   UserModel loggedInuser = UserModel();
 
   @override
@@ -41,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
             });
     });
+
   }
+
   @override
   Widget build(BuildContext context) {
     final List<String> imgList = [
@@ -70,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: Colors.lightBlue,
 
               ),
               ),
@@ -81,6 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
               textColor: Colors.red,
               onTap: ()=> {
               Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
+              },
+            ),
+            ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+             onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageUser())),
               },
             ),
               ListTile(
@@ -110,6 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
               title : Text("Request funds"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
+              },
+            ),
+            ListTile(
+              leading : Icon(Icons.payment),
+              title : Text("Don / Payer événement "),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
             ),
             ListTile(
@@ -156,9 +188,23 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlue,
-        child : Icon(Icons.chat_sharp),
+        child : Badge(
+          padding: EdgeInsets.all(6),
+          badgeColor: Colors.redAccent,
+          toAnimate: false,
+          showBadge:loggedInuser.badge_message==0?false :true,
+          position: BadgePosition.bottomEnd(bottom: 24,end: -15),
+          badgeContent: Text('${loggedInuser.badge_message}',textAlign:TextAlign.center,style: TextStyle(
+            fontSize: 14,
+
+            color: Colors.white ,
+            fontWeight: FontWeight.bold,
+          ),),
+          child : Icon(Icons.chat_sharp)
+
+        ),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomePage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomePageChatUser()));
 
         },
       ),
@@ -234,6 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
+
 }
 
 

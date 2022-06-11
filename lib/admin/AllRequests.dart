@@ -9,6 +9,7 @@ import 'AboutUsAdmin.dart';
 import 'AddPost.dart';
 import 'DataBaseScreen.dart';
 import 'add_event.dart';
+import 'add_someone.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 List<DocumentSnapshot> ?documents_requests;
@@ -113,6 +114,15 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
               {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => AddEvent()))
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Someone"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddSomeone()))
               },
             ),
             ListTile(

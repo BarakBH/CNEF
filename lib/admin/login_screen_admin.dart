@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../screens_user/forgot_password_page.dart';
 import 'RegistrationAdmin_screen.dart';
 class LoginAdminScreen extends StatefulWidget {
   const LoginAdminScreen({Key? key}) : super(key: key);
@@ -158,6 +159,28 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                   passwordField,
                                   SizedBox(height : 35),
                                   loginButton,
+                                  SizedBox(height: 15),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children:<Widget>[
+                                        Text("Mot de passe oublie "),
+                                        GestureDetector(onTap:(){
+                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgotPasswordPage()
+                                          ));
+                                        },
+                                          child: Text("Cliquez ici",style: TextStyle(
+                                            fontWeight:FontWeight.bold,
+                                            fontSize:15,
+                                            color : Colors.redAccent,
+
+                                          ),
+                                          ),
+
+                                        )
+
+                                      ]
+
+                                  ),
                                   SizedBox(height: 15),
                                   Row(
                                       mainAxisAlignment: MainAxisAlignment.center,

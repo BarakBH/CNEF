@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cnef_app/screens_user/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,10 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 
+import '../model/user_model.dart';
+
 class ChatDetail extends StatefulWidget {
+ // static String copy_friend_uid="";
   final friendUid;
   final friendName;
 
@@ -17,10 +21,13 @@ class ChatDetail extends StatefulWidget {
 }
 
 class _ChatDetailState extends State<ChatDetail> {
+
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   final friendUid;
   final friendName;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  UserModel friendUser = UserModel();
+  UserModel currentUser=UserModel();
 
   var chatDocId;
   var _textController = new TextEditingController();
@@ -28,7 +35,9 @@ class _ChatDetailState extends State<ChatDetail> {
   @override
   void initState() {
     super.initState();
+
     checkUser();
+
   }
 
   void checkUser() async {
@@ -47,7 +56,7 @@ class _ChatDetailState extends State<ChatDetail> {
         } else {
           await chats.add({
             'users': {currentUserId: null, friendUid: null},
-            'names':{currentUserId:FirebaseAuth.instance.currentUser?.uid,friendUid:friendUid}
+            'names':{currentUserId:FirebaseAuth.instance.currentUser?.uid,friendUid:friendName}
           }).then((value) => {chatDocId = value});
         }
       },
@@ -64,6 +73,7 @@ class _ChatDetailState extends State<ChatDetail> {
       'msg': msg
     }).then((value) {
       _textController.text = '';
+
     });
   }
 
@@ -126,18 +136,20 @@ class _ChatDetailState extends State<ChatDetail> {
                               margin: EdgeInsets.only(top: 10),
                               backGroundColor: isSender(data['uid'].toString())
                                   ? Colors.lightBlue
-                                  : Colors.red,
+                                  : Colors.grey[200],
                               child: Container(
                                 constraints: BoxConstraints(
                                   maxWidth:
-                                  MediaQuery.of(context).size.width * 0.9,
+                                  MediaQuery.of(context).size.width * 0.7,
                                 ),
                                 child: Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                    //  mainAxisAlignment: MainAxisAlignment.start,
+                                    //  crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
+                                        Flexible(
+                                            child:
                                         Text(data['msg'],
                                             style: TextStyle(
                                               inherit: false,
@@ -146,12 +158,15 @@ class _ChatDetailState extends State<ChatDetail> {
                                                     data['uid'].toString())
                                                     ? Colors.white
                                                     : Colors.black),
-                                            overflow: TextOverflow.ellipsis)
+                                            overflow: TextOverflow.visible)
+                                        ),
                                       ],
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
+                                        Flexible(
+                                          child:
                                         Text(
                                           data['createdOn'] == null
                                               ? DateTime.now().toString()
@@ -167,6 +182,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                                   : Colors.black),
                                           maxLines: 100,
                                         )
+                                        ),
                                       ],
                                     )
                                   ],
@@ -191,7 +207,7 @@ class _ChatDetailState extends State<ChatDetail> {
                       ),
                       CupertinoButton(
                           child: Icon(Icons.send_sharp),
-                          onPressed: () => sendMessage(text_send(_textController.text)))
+                          onPressed: () => sendMessage(_textController.text))
                     ],
                   )
                 ],
@@ -205,15 +221,5 @@ class _ChatDetailState extends State<ChatDetail> {
     );
   }
 
-  String text_send(String text){
-   String text2="" ;
-    for(int i=0;i<text.length;i+=25){
-      if(i+24 <text.length) {
-        text2 += text.substring(i, i + 24);
-        text2 +="\n";
-      }
-      else text2 += text.substring(i, text.length);
-    }
-    return text2;
-  }
+
 }

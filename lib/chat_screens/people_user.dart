@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import '../model/user_model.dart';
 import 'chat_detail.dart';
 
-class People extends StatelessWidget {
-  People({Key? key}) : super(key: key);
+import 'chat_detail.dart';
+class PeopleUser extends StatelessWidget {
+  PeopleUser({Key? key}) : super(key: key);
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
-
   void callChatDetailScreen(BuildContext context, String name, String uid) {
     Navigator.push(
         context,
@@ -22,13 +22,12 @@ class People extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("users")
-            .where('uid', isNotEqualTo: currentUser)
+            .where('role', isEqualTo: 'admin')
             .snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(
               child: Text("Something went wrong"),
@@ -42,38 +41,39 @@ class People extends StatelessWidget {
                   largeTitle: Text("People"),
                 ),
                 SliverList(
+
                   delegate: SliverChildListDelegate(
+
                     snapshot.data!.docs.map(
                           (DocumentSnapshot document) {
                         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
                         return CupertinoListTile(
                           leading: data['badge_message']>0?Badge(
                             alignment: Alignment.bottomRight,
-                              padding: EdgeInsets.all(6),
-                              badgeColor: Colors.redAccent,
-                              toAnimate: false,
-                              showBadge:true,
-                              position: BadgePosition.topEnd(),
-                              badgeContent: Text("${data['badge_message']}",textAlign:TextAlign.center,style: TextStyle(
-                                fontSize: 14,
+                            padding: EdgeInsets.all(6),
+                            badgeColor: Colors.redAccent,
+                            toAnimate: false,
+                            showBadge:true,
+                            position: BadgePosition.topEnd(),
+                            badgeContent: Text("${data['badge_message']}",textAlign:TextAlign.center,style: TextStyle(
+                              fontSize: 14,
 
-                                color: Colors.white ,
-                                fontWeight: FontWeight.bold,
-                              ),),
+                              color: Colors.white ,
+                              fontWeight: FontWeight.bold,
+                            ),),
 
 
                           )
                               :null
                           ,
-                          onTap: () {
-                            addBadge(data['uid']);
-                            callChatDetailScreen(
+                         onTap: () {
+                          addBadge(data['uid']);
+                          callChatDetailScreen(
                               context, data['firstName'], data['uid']);
 
-                            },
+                        },
                           title: Text("${data['firstName']} ${data['lastname']}"),
-                          subtitle: Text("${data['role']} "),
+                          subtitle: Text("${data['role']}"),
                         );
                       },
                     ).toList(),
@@ -82,11 +82,15 @@ class People extends StatelessWidget {
               ],
             );
           }
+
           return Container();
-        });
+        }
+
+        );
   }
   void addBadge(final uid){
    // FirebaseFirestore.instance.collection('users').doc(uid).update({'badge_message':0 });
 
   }
+
 }

@@ -16,6 +16,7 @@ import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'Requestfund_screen.dart';
+import 'faire_un_don_autre.dart';
 import 'home_screen.dart';
 import 'home_screen_general.dart';
 class FamiliesContact extends StatefulWidget {
@@ -277,7 +278,7 @@ class _FamiliesContactState extends State<FamiliesContact> {
                 ),
               ),
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: Colors.lightBlue,
 
               ),
             ),
@@ -317,6 +318,13 @@ class _FamiliesContactState extends State<FamiliesContact> {
               title : Text("Request funds"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
+              },
+            ),
+            ListTile(
+              leading : Icon(Icons.payment),
+              title : Text("Don / Payer événement "),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
             ),
             ListTile(

@@ -37,7 +37,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         controller: firstNameEditingController,
         keyboardType: TextInputType.name,
         validator: (value){
-          if(value!.isEmpty||!lastNameEditingController.text.contains("FENC26")){
+          if(value!.isEmpty||!firstNameEditingController.text.contains("FENC26")){
             return ("FirstName is required for login");
           }
         },
@@ -308,6 +308,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
                 )
             )
         )
+
     );
   }
   void signUp(String email,String password) async {
@@ -337,7 +338,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
     userModel.email =user!.email;
     userModel.uid = user.uid;
     userModel.firstname = firstNameEditingController.text.substring(0,firstNameEditingController.text.length-6);
-    userModel.lastName=lastNameEditingController.text.substring(0,firstNameEditingController.text.length-6);
+    userModel.lastName=lastNameEditingController.text.substring(0,lastNameEditingController.text.length-6);
     userModel.gender =genderEditingController.text;
     userModel.numberPhone=phoneNumberEditingController.text;
     userModel.role="admin";

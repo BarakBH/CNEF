@@ -16,8 +16,9 @@ class UserModel{
   String? numberPhone;
   String? role;
   String? file;
+  int badge_message;
 
-  UserModel({this.uid,this.file,this.email,this.firstname,this.lastName,this.gender,this.dateBirth,this.yearOfAlyah,this.status,this.id,this.numberPhone,this.role});
+  UserModel({this.uid,this.file,this.email,this.firstname,this.lastName,this.gender,this.dateBirth,this.yearOfAlyah,this.status,this.id,this.numberPhone,this.role,this.badge_message=0});
 
   //data frm server
 
@@ -35,7 +36,7 @@ class UserModel{
       id: map['id'],
       numberPhone:map['numberPhone'],
       role:map['role'],
-
+      badge_message: map['badge_message'],
 
     );
   }
@@ -55,8 +56,7 @@ class UserModel{
       'id' : id,
       'numberPhone' : numberPhone,
       'role' : role,
-
-
+      'badge_message':badge_message,
 
     };
   }
@@ -79,7 +79,7 @@ class UserModel{
         id: map['id'],
         numberPhone:map['numberPhone'],
         role:map['role'],
-
+        badge_message: map['badge_message']
 
       );
     }).toList();

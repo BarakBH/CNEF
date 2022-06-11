@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/screens_user/login_screen.dart';
+import 'package:cnef_app/screens_user/profile_page_user.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,6 +18,7 @@ import '../model/user_model.dart';
 import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
+import 'faire_un_don_autre.dart';
 import 'home_screen.dart';
 import 'home_screen_general.dart';
 bool check = true;
@@ -216,7 +218,7 @@ class _RequestFundsState extends State<RequestFunds> {
                 ),
               ),
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: Colors.lightBlue,
 
               ),
             ),
@@ -226,6 +228,13 @@ class _RequestFundsState extends State<RequestFunds> {
 
               onTap: ()=> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
+              },
+            ),
+            ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageUser())),
               },
             ),
             //salut
@@ -259,6 +268,13 @@ class _RequestFundsState extends State<RequestFunds> {
               textColor: Colors.red,
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
+              },
+            ),
+            ListTile(
+              leading : Icon(Icons.payment),
+              title : Text("Don / Payer événement "),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
             ),
             ListTile(

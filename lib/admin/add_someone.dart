@@ -1,28 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cnef_app/admin/add_event.dart';
+import 'package:cnef_app/admin/add_new_old_student.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../model/user_model.dart';
 import '../screens_user/home_screen_general.dart';
+import 'AboutUsAdmin.dart';
 import 'AddPost.dart';
 import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
-import 'add_someone.dart';
+import 'add_event.dart';
+import 'add_new_family.dart';
 import 'home_screen_admin.dart';
-import 'login_screen_admin.dart';
-class AboutUsAdminScreen extends StatefulWidget {
-  const AboutUsAdminScreen({Key? key}) : super(key: key);
+
+class AddSomeone extends StatefulWidget {
+  const AddSomeone({Key? key}) : super(key: key);
 
   @override
-  _AboutUsAdminScreenState createState() => _AboutUsAdminScreenState();
+  _AddSomeoneState createState() => _AddSomeoneState();
 }
 
-class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
+class _AddSomeoneState extends State<AddSomeone> {
   @override
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedUser = UserModel();
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,15 +42,10 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
       });
     });
 
+ }
 
-  }
-  Future<void> logout(BuildContext context) async{
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
-  }
+  @override
   Widget build(BuildContext context) {
-    double c_width = MediaQuery.of(context).size.width*1;
 
     return Scaffold(
 
@@ -55,8 +54,7 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
           children: [
             UserAccountsDrawerHeader(
               accountName: Text(
-                  "${loggedUser.firstname.toString()} ${loggedUser.lastName
-                      .toString()}"),
+                  "${loggedUser.firstname} ${loggedUser.lastName}"),
               accountEmail: Text("${loggedUser.email}"),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
@@ -113,6 +111,8 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
             ListTile(
               leading: Icon(Icons.add),
               title: Text("Add Someone"),
+              iconColor: Colors.red,
+              textColor: Colors.red,
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -133,8 +133,7 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
             ListTile(
               leading: Icon(Icons.info_outline),
               title: Text("About us "),
-              iconColor: Colors.red,
-              textColor: Colors.red,
+
               onTap: () =>
               {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -153,29 +152,50 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("About Us "),
+        title: Text("Add Someone "),
 
       ),
-      body : SingleChildScrollView(
-        child : new Container (
-          padding: const EdgeInsets.all(16.0),
-          width: c_width,
-          child: new Column (
 
-              children: <Widget>[
-                Text ("Fondé en 1987, le CNEF est une association encourageant a l’Alya qui a pour but d’accueillir, encadrer, orienter et aider les jeunes francophones dans leur intégration en Israël.\n"
-                    "\nLe CNEF intervient depuis l’aide à l’élaboration du projet d’Alya jusqu’à l’aide à l’intégration sociale, académique et culturelle en Israël.\n\nGrace à son action, le CNEF est reconnu comme l’organisme de référence dans l’aide et l’intégration des étudiants et jeunes francophones venant s’installer en Israël.\n\nLe CNEF propose un service professionnel gratuit d’information et de conseils personnalisés pré et post Alya dans plusieurs domaines:\n\n• Département études: programmes d’intégration pour jeunes olim francophones, possibilités d’études en Israël, équivalences de diplômes/poursuites d’études\n\n• Département armée/ Volontariat Civil\n\n•Département administration: droits administratifs du nouvel immigrant.\n\nLe CNEF attribue des bourses au cas par cas et selon le budget aux étudiants les plus nécessiteux.\n\nTout au long de l’année sont organisés des activités, des shabbat pleins, des conférences et soirées culturelles, des excursions.\n\nLe CNEF compte plus de 1000 jeunes actuellement repartis dans tout le pays.\n\nLe CNEF, c’est une équipe de 5 professionnels et 30 bénévoles dirigés par Sam Kadosh, présents dans tout Israël et sur les différents campus universitaires.\n\nNos locaux sont situes a Jérusalem. Nous recevons sur rdv. \n\nVous pouvez nous contacter par tel: 026222625, par mail: info@cnef.org ou \nsur WhatsApp: 0584222526.\n\n Nous avons également un site internet www.cnef.org , une page et un groupe facebook (CNEF-centre national des etudiants francophones) ainsi qu’un compte Instagram (cnef_israel) actifs.",style: TextStyle(
-                  fontSize: 18,
-                ),),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.add_event,
+        backgroundColor: Colors.indigo,
+        children: [
+          SpeedDialChild(
+              backgroundColor: Colors.lightGreen[600],
+              child: Icon(Icons.family_restroom),
+              label: 'Ajouter une gentille famille',
+              onTap: ()=>{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddNewFamily()),)
 
-              ]
+
+              }
 
           ),
+          SpeedDialChild(
+              backgroundColor: Colors.blueGrey[300],
+              child: Icon(Icons.work),
+              label: 'Ajouter un ancien élève',
+              onTap: ()=>{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddNewOldStudent()),)
 
-        ),
 
+              }
+          ),
 
+        ],
       ),
+
+     body: Center(),
+
     );
+  }
+  Future<void> logout(BuildContext context) async{
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
 }

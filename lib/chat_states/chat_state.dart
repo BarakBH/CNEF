@@ -13,8 +13,6 @@ class ChatState = _ChatState with _$ChatState;
 // The store-class
 abstract class _ChatState with Store {
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
-  UserModel loggedInuser = UserModel();
-  //var currentUser = FirebaseAuth.instance.currentUser?.uid;
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
 
   @observable
@@ -45,7 +43,7 @@ abstract class _ChatState with Store {
             messages[doc['name']] = {
               'msg': snapshot.docs.first['msg'],
               'time': snapshot.docs.first['createdOn'],
-              'friendName':snapshot.docs.first['name'],
+              'friendName':snapshot.docs.first['friendName'],
               'friendUid':snapshot.docs.first['uid']
             };
           }

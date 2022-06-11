@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/model/old_student_model.dart';
 import 'package:cnef_app/screens_user/home_screen_general.dart';
 import 'package:cnef_app/screens_user/login_screen.dart';
+import 'package:cnef_app/screens_user/profile_page_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_search/firestore_search.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'dart:developer';
 import '../model/user_model.dart';
 import 'AboutUs_screen.dart';
 import 'Requestfund_screen.dart';
+import 'faire_un_don_autre.dart';
 import 'home_screen.dart';
 List<DocumentSnapshot> ?documents_2;
 DocumentSnapshot ?petit_document;
@@ -75,7 +77,7 @@ class _ContactStudentState extends State<ContactStudent> {
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.blueGrey,
+                  color: Colors.lightBlue,
                 ),
               ),
               ListTile(
@@ -83,6 +85,13 @@ class _ContactStudentState extends State<ContactStudent> {
                 title : Text("Home"),
                 onTap: ()=> {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
+                },
+              ),
+              ListTile(
+                leading : Icon(Icons.account_circle_rounded),
+                title : Text("Profil"),
+               onTap: ()=> {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageUser())),
                 },
               ),
               ListTile(
@@ -107,6 +116,13 @@ class _ContactStudentState extends State<ContactStudent> {
                 title : Text("Request funds"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
+                },
+              ),
+              ListTile(
+                leading : Icon(Icons.payment),
+                title : Text("Don / Payer événement "),
+                onTap: ()=>{
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
                 },
               ),
               ListTile(

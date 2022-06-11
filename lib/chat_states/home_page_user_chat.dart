@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../chat_screens/chats.dart';
-import '../chat_screens/people.dart';
-
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-  var screens = [const Chats(), People()];
+import '../chat_screens/people_user.dart';
+class HomePageChatUser extends StatelessWidget {
+  HomePageChatUser({Key? key}) : super(key: key);
+  var screens = [const Chats(), PeopleUser()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,4 +32,5 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 }

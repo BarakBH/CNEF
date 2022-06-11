@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../admin/login_screen_admin.dart';
 import '../model/user_model.dart';
+import 'forgot_password_page.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -156,6 +157,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                   passwordField,
                                   SizedBox(height : 35),
                                   loginButton,
+                                  SizedBox(height: 15),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children:<Widget>[
+                                        Text("Mot de passe oublie "),
+                                        GestureDetector(onTap:(){
+                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgotPasswordPage()
+                                          ));
+                                        },
+                                          child: Text("Cliquez ici",style: TextStyle(
+                                            fontWeight:FontWeight.bold,
+                                            fontSize:15,
+                                            color : Colors.lightBlue,
+
+                                          ),
+                                          ),
+
+                                        )
+
+                                      ]
+
+                                  ),
                                   SizedBox(height: 15),
                                   Row(
                                       mainAxisAlignment: MainAxisAlignment.center,

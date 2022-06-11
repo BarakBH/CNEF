@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -107,7 +108,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               onTap: () =>
               {
               Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => AddSomeone()))
+              MaterialPageRoute(builder: (context) => const AddSomeone()))
               },
             ),
             ListTile(
@@ -151,12 +152,26 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.redAccent,
-        child : Icon(Icons.chat_sharp),
-        onPressed: (){
+        child : Badge(
+            padding: EdgeInsets.all(6),
+            badgeColor: Colors.redAccent,
+            toAnimate: false,
+            showBadge:loggedUser.badge_message==0?false :true,
+            position: BadgePosition.bottomEnd(bottom: 24,end: -15),
+            badgeContent: Text('${loggedUser.badge_message}',textAlign:TextAlign.center,style: TextStyle(
+              fontSize: 14,
+
+              color: Colors.white ,
+              fontWeight: FontWeight.bold,
+            ),),
+            child : Icon(Icons.chat_sharp)
+
+        ),
+          onPressed: () {
+
           Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomePage()));
 
-
-        },
+    },
       ),
 
 
@@ -231,4 +246,5 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
+
 }

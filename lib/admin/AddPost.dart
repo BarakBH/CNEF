@@ -16,6 +16,7 @@ import 'AboutUsAdmin.dart';
 import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
 import 'add_event.dart';
+import 'add_someone.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 class AddPostScreen extends StatefulWidget {
@@ -182,6 +183,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     MaterialPageRoute(builder: (context) => AddEvent()))
               },
             ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Someone"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddSomeone()))
+              },
+            ),
+
             ListTile(
               leading: Icon(Icons.contact_phone),
               title: Text("All Requests"),

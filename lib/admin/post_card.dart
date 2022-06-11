@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:cnef_app/model/user_model.dart' as model;
 
+import '../model/user_model.dart';
 import 'firestore_methods.dart';
 const webScreenSize = 600;
 const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
@@ -26,6 +27,9 @@ class PostCard extends StatefulWidget {
 }
 DateFormat ?dateFormat;
 class _PostCardState extends State<PostCard> {
+  User? user = FirebaseAuth.instance.currentUser;
+
+  UserModel loggedUser = UserModel();
   int commentLen = 0;
   bool isLikeAnimating = false;
 
@@ -33,6 +37,16 @@ class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value){
+      loggedUser = UserModel.fromMap(value.data());
+      setState(() {
+
+      });
+    });
     initializeDateFormatting();
     dateFormat= DateFormat.yMMMd('fr');
   }
@@ -92,7 +106,7 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                 ),
-                widget.snap['uid'].toString() == user?.uid
+                loggedUser.role == 'admin'
                     ?
                  IconButton(
                   onPressed: () {
@@ -171,9 +185,7 @@ class _PostCardState extends State<PostCard> {
                 ),
           ),
 
-          // LIKE, COMMENT SECTION OF THE POST
 
-          //DESCRIPTION AND NUMBER OF COMMENTS
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(

@@ -18,6 +18,7 @@ import 'AboutUsAdmin.dart';
 import 'AddPost.dart';
 import 'AllRequests.dart';
 import 'add_event.dart';
+import 'add_someone.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 List<DocumentSnapshot> ?documents_2;
@@ -116,6 +117,15 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
               {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => AddEvent()))
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("Add Someone"),
+              onTap: () =>
+              {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => AddSomeone()))
               },
             ),
             ListTile(

@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OldStudentModel {
-  String? uid;
   String? email;
   String? firstname;
   String? lastName;
@@ -10,10 +9,9 @@ class OldStudentModel {
   String? description;
   String? domaine;
 
-  OldStudentModel({this.uid,this.email,this.firstname,this.lastName,this.numberPhone,this.domaine,this.description});
+  OldStudentModel({this.email,this.firstname,this.lastName,this.numberPhone,this.domaine,this.description});
   factory OldStudentModel.fromMap(map){
     return OldStudentModel(
-      uid: map['uid'],
       email:map['email'],
       firstname: map['firstName'],
       lastName: map['lastName'],
@@ -29,7 +27,6 @@ class OldStudentModel {
   //dendding data o our server
   Map<String,dynamic> toMap() {
     return {
-      'uid': uid,
       'email': email,
       'firstName': firstname,
       'lastName': lastName,
@@ -46,7 +43,6 @@ class OldStudentModel {
       snapshot.data() as Map<String, dynamic>;
 
       return OldStudentModel(
-        uid: map['uid'],
         email:map['email'],
         firstname: map['firstName'],
         lastName: map['lastName'],
