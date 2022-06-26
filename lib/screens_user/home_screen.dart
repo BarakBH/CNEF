@@ -18,14 +18,17 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../admin/event_card.dart';
 import '../admin/post_card.dart';
+import '../chat_screens/people_user.dart';
 import '../chat_states/home_page_chat.dart';
 import '../model/user_model.dart';
 import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'Requestfund_screen.dart';
+import 'appointment_screen.dart';
 import 'faire_un_don_autre.dart';
 import 'home_screen_general.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
  // static int num =0;
@@ -94,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ListTile(
               leading : Icon(Icons.home),
-              title : Text("Home"),
+              title : Text("Menu"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: ()=> {
@@ -108,9 +111,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageUser())),
               },
             ),
+            ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Appointment()))
+              },
+            ),
               ListTile(
                 leading : Icon(Icons.family_restroom),
-                title : Text("Families Contact"),
+                title : Text("Contacter Famille"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FamiliesContact()))
                 },
@@ -118,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             ListTile(
               leading : Icon(Icons.contact_phone),
-              title : Text("Contact Student(s)"),
+              title : Text("Contacter un(e) ancien(ne) étudiant(e)"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ContactStudent()))
               },
@@ -132,28 +142,28 @@ class _HomeScreenState extends State<HomeScreen> {
             // ),
             ListTile(
               leading : Icon(Icons.attach_money),
-              title : Text("Request funds"),
+              title : Text("Demande spéciale"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
               },
             ),
             ListTile(
               leading : Icon(Icons.payment),
-              title : Text("Don / Payer événement "),
+              title : Text("Faire un don/Payer événement"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
             ),
             ListTile(
               leading : Icon(Icons.info_outline),
-              title : Text("About us "),
+              title : Text("A propos de nous"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AboutUs()))
                 },
             ),
             ListTile(
               leading : Icon(Icons.logout),
-              title : Text("Logout"),
+              title : Text("Se déconnecter"),
               onTap: (){
                 logout(context);
               },
@@ -173,11 +183,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
 
                   child : Text(
-                    "Events",
+                    "Evénements",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20.0
+                        fontSize: 18.0
                     ),
 
                   ),

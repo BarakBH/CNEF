@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/admin/firestore_methods.dart';
+import 'package:cnef_app/admin/profile_page_admin.dart';
 import 'package:cnef_app/screens_user/registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
 import 'add_event.dart';
 import 'add_someone.dart';
+import 'all_meetings_view.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 class AddPostScreen extends StatefulWidget {
@@ -75,11 +77,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
   _selectImage(BuildContext context) async {
     return showDialog(context: context, builder: (context){
       return SimpleDialog(
-        title: const Text('Create Post'),
+        title: const Text('Créer un post'),
         children: [
           SimpleDialogOption(
             padding : const EdgeInsets.all(20),
-            child : const Text('Take a photo'),
+            child : const Text('Prendre une photo'),
             onPressed:() async {
               Navigator.of(context).pop();
               Uint8List file = await pickImage(ImageSource.camera,);
@@ -90,7 +92,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
           SimpleDialogOption(
             padding : const EdgeInsets.all(20),
-            child : const Text('Choose from your gallery'),
+            child : const Text('Choisir depuis la gallerie'),
             onPressed:() async {
               Navigator.of(context).pop();
               Uint8List file = await pickImage(ImageSource.gallery,);
@@ -101,7 +103,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
           SimpleDialogOption(
             padding : const EdgeInsets.all(20),
-            child : const Text('Cancel'),
+            child : const Text('Annuler'),
             onPressed:(){
               Navigator.of(context).pop();
 
@@ -146,7 +148,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text("Home"),
+              title: Text("Menu"),
 
               onTap: () =>
               {
@@ -155,8 +157,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageAdmin())),
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.web),
-              title: Text("DataBase"),
+              title: Text("Users/Admins"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -165,7 +174,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Post"),
+              title: Text("Ajouter un post"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: () =>
@@ -176,7 +185,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Event"),
+              title: Text("Ajouter un événement"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -185,17 +194,23 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Someone"),
+              title: Text("Ajouter ancien étudiant/famille"),
               onTap: () =>
               {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => AddSomeone()))
               },
             ),
-
+            ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère/Autorisations"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AllMeetingsView()))
+              },
+            ),
             ListTile(
               leading: Icon(Icons.contact_phone),
-              title: Text("All Requests"),
+              title: Text("Toutes les demandes"),
               onTap: () =>
               {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -205,7 +220,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
             ListTile(
               leading: Icon(Icons.info_outline),
-              title: Text("About us "),
+              title: Text("A propos de nous"),
               onTap: () =>
               {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -214,7 +229,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              title: Text("Se déconnecter"),
               onTap: () {
                 logout(context);
               },
@@ -226,7 +241,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         backgroundColor: Colors.redAccent,
 
         title: const Text(
-          'Post to',
+          'Ajouter un post',
         ),
         centerTitle: false,
         actions: <Widget>[
@@ -276,7 +291,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                    controller: _descriptionController,
                   decoration: const InputDecoration(
 
-                  hintText: "Write a caption...",
+                  hintText: "Ecriver une description...",
                        border: InputBorder.none),
                    maxLines: 8,
                  ),

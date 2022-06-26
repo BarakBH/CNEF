@@ -1,7 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cnef_app/admin/profile_page_admin.dart';
+import 'package:cnef_app/model/request_user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firestore_search/firestore_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 import '../model/user_model.dart';
 import '../screens_user/home_screen_general.dart';
@@ -10,6 +17,7 @@ import 'AddPost.dart';
 import 'DataBaseScreen.dart';
 import 'add_event.dart';
 import 'add_someone.dart';
+import 'all_meetings_view.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 List<DocumentSnapshot> ?documents_requests;
@@ -74,13 +82,13 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
                 ),
               ),
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color:Colors.blueGrey,
 
               ),
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text("Home"),
+              title: Text("Menu"),
 
               onTap: () =>
               {
@@ -89,8 +97,15 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageAdmin())),
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.web),
-              title: Text("DataBase"),
+              title: Text("Users/Admins"),
 
               onTap: () =>
               {
@@ -100,7 +115,7 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Post"),
+              title: Text("Ajouter un post"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -109,7 +124,7 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Event"),
+              title: Text("Ajouter un événement"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -118,7 +133,7 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Someone"),
+              title: Text("Ajouter ancien étudiant/famille"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -126,8 +141,15 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère/Autorisations"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AllMeetingsView()))
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.contact_phone),
-              title: Text("All Requests"),
+              title: Text("Toutes les demandes"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: () =>
@@ -139,7 +161,7 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
 
             ListTile(
               leading: Icon(Icons.info_outline),
-              title: Text("About us "),
+              title: Text("A propos de nous"),
               onTap: () =>
               {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -148,7 +170,7 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              title: Text("Se déconnecter"),
               onTap: () {
                 logout(context);
               },
@@ -158,77 +180,89 @@ class _AllRequestsScreenState extends State<AllRequestsScreen> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("All Requests"),
+        title: Text("Toutes les demandes"),
 
       ),
 
-      body : Column(
-        children:<Widget>[
+      body :
+      FirestoreSearchScaffold(
+      appBarBackgroundColor: Colors.white,
+      firestoreCollectionName: 'request_users',
+      searchBy: 'firstName',
+      scaffoldBody: Center(),
+      dataListFromSnapshot: RequestUserModel().dataListFromSnapshot,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<RequestUserModel>? dataList = snapshot.data;
+          if (dataList!.isEmpty) {
+            PaginateRefreshedChangeListener refreshChangeListener = PaginateRefreshedChangeListener();
+            return RefreshIndicator(
+              child: PaginateFirestore(
+                itemBuilder: (context, documentSnapshots, index) {
+                  final data = documentSnapshots[index].data() as Map?;
+                  return ListTile(
 
-        Text("Request funds ",style: TextStyle(
-        fontSize: 20,
-        inherit: true,
+                    title: data==null ? Text('Error in data') : Text(data['firstName']+" "+data['lastName'],style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    ),
+                    subtitle: data==null?Text('Error in data'): Text( data['description']+"\n"+"Montant:"+data['montant'])
+                    ,
 
-      ),),
-      Expanded(
-          child :FutureBuilder<QuerySnapshot>(
 
-              future: years,
-              builder: (context, snapshot) {
-                documents_requests= snapshot.data!.docs;
-                return ListView(
-                    children: documents_requests
-                    !.map((doc) =>
-                        Card(
-                          child: ListTile(
-                            title: Text(
-                                "Eytan a fait une demande d'un montant de ${doc.get('montant')}\n${doc.get('description')}}"
-                                    ),
-                            
-                          ),
-                          
-                        )).toList()
+                  );
+                } ,
+                // orderBy is compulsary to enable pagination
+                query: FirebaseFirestore.instance.collection('request_users').orderBy('firstName'),
+                listeners: [
+                  refreshChangeListener,
+                ], itemBuilderType: PaginateBuilderType.listView,
+
+              ),
+              onRefresh: () async {
+                refreshChangeListener.refreshed = true;
+              },
+            );
+          }
+          return ListView.builder(
+              itemCount: dataList.length,
+              itemBuilder: (context, index) {
+                final RequestUserModel data = dataList[index];
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+
+                      title: Text('${data.firstName} ${data.lastName}',style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      subtitle:Text('${data.description} \nMontant: ${data.montant}'),
+                )
+                      ,
+
+
+                  ],
                 );
+              });
+        }
 
-              }
-
-
-
-          )
-      ),
-          Text("Requests Chabbat",style: TextStyle(
-            fontSize: 20,
-            inherit: true,
-
-          ),),
-          Expanded(
-              child :FutureBuilder<QuerySnapshot>(
-
-                  future: years2,
-                  builder: (context, snapshot) {
-                    documents_requests2= snapshot.data!.docs;
-                    return ListView(
-                        children: documents_requests2
-                        !.map((doc) =>
-                            Card(
-                              child: ListTile(
-                                title: Text(
-                                    "Eytan demande a etre invite Chabbat a ${doc.get('location')}\n${doc.get('location')}"
-                                ),
-
-                              ),
-
-                            )).toList()
-                    );
-
-                  }
-
-
-
-              )
-          ),
-      ]
-      ),
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text('Aucun résultat retourné'),
+            );
+          }
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    )
     );
   }
 

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cnef_app/admin/profile_page_admin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -19,6 +20,7 @@ import 'AddPost.dart';
 import 'AllRequests.dart';
 import 'add_event.dart';
 import 'add_someone.dart';
+import 'all_meetings_view.dart';
 import 'home_screen_admin.dart';
 import 'login_screen_admin.dart';
 List<DocumentSnapshot> ?documents_2;
@@ -82,7 +84,7 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text("Home"),
+              title: Text("Menu"),
 
               onTap: () =>
               {
@@ -91,8 +93,15 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageAdmin())),
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.web),
-              title: Text("DataBase"),
+              title: Text("Users/Admins"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: () =>
@@ -103,7 +112,7 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Post"),
+              title: Text("Ajouter un post"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -112,7 +121,7 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Event"),
+              title: Text("Ajouter un événement"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -121,7 +130,7 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Someone"),
+              title: Text("Ajouter ancien étudiant/famille"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -129,8 +138,15 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère/Autorisations"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AllMeetingsView()))
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.contact_phone),
-              title: Text("All Requests"),
+              title: Text("Toutes les demandes"),
               onTap: () =>
               {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -140,7 +156,7 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
 
             ListTile(
               leading: Icon(Icons.info_outline),
-              title: Text("About us "),
+              title: Text("A propos de nous"),
               onTap: () =>
               {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -149,7 +165,7 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              title: Text("Se déconnecter"),
               onTap: () {
                 logout(context);
               },
@@ -159,10 +175,11 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("DataBase"),
+        title: Text("Users/Admins"),
 
       ),
-        body :FirestoreSearchScaffold(
+        body :
+        FirestoreSearchScaffold(
          appBarBackgroundColor: Colors.white,
           firestoreCollectionName: 'users',
           searchBy: 'firstName',
@@ -193,14 +210,15 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
                       ),
                       ),
                       ),
-                        title: data==null ? Text('Error in data') : Text(data['firstName']+" "+data['lastname'],style: TextStyle(
+                        title: data==null ? Text('Error in data') : Text(data['firstName']+" "+data['lastname']+"("+data['role']+")",style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                        ),),
-                      subtitle:  data==null ? Text('Error in data') :Text(data['role'],style: TextStyle(
-                        color: Colors.red,
+                        ),
+                      ),
+                      subtitle: data==null?Text('Error in data'): Text( data['email'])
+                          ,
 
-                      ),),
+
                       );
                     } ,
                     // orderBy is compulsary to enable pagination
@@ -241,14 +259,15 @@ class _DataBaseScreenState extends State<DataBaseScreen> {
                         ),
                       ),
                     ),
-                    title: Text('${data.firstname} ${data.lastName}',style: TextStyle(
+                    title: Text('${data.firstname} ${data.lastName} (${data.role})',style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),),
-                    subtitle: Text('${data.role}',style: TextStyle(
-                      color: Colors.red,
-
-                    ),),
+                    subtitle:'${data.role}'=='admin'? Text('${data.email}\n${data.gender}\nNumTel: ${data.numberPhone}'):
+                      Text("${data.email}\n${data.gender}\nNumTel: ${data.numberPhone}\nId: ${data.id}\nDate naissance: ${data.dateBirth}\nDate Alyah: ${data.yearOfAlyah}\nStatut : ${data.status}",style: TextStyle(
+                        fontSize:17,
+                      ),)
+                      ,
                     ),
                       ],
                     );

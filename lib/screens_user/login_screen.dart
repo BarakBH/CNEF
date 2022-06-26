@@ -56,11 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
         validator: (value){
           if(value!.isEmpty)
             {
-              return ("Please enter your email");
+              return ("Adresse email");
 
             }
           if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
-            return("Please Enter a valid email");
+            return("Merci d'entrer une adresse email valide");
 
           }
             //reg expression for email validation
@@ -91,10 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
         validator: (value){
           RegExp regex = new RegExp(r'^.{6,}$');
           if(value!.isEmpty){
-            return ("Password is required for login");
+            return ("Le mot de passe est obligatoire");
           }
           if(!regex.hasMatch(value)){
-            return ("Please Enter Valid Password (Min. 6chars)");
+            return ("Merci d'entrer un mot de passe valide(6 caractères)");
           }
 
         },
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.lock),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Password",
+            hintText: "Mot de passe",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
         },
-        child : Text("Login", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+        child : Text("Se connecter", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
       ),
     );
     return Scaffold(
@@ -138,12 +138,15 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
             child: SingleChildScrollView(
                 child: Container(
+
                     color: Colors.white,
                     child: Padding(
+
                         padding: const EdgeInsets.all(36.0),
                         child: Form(
                             key: _formKey,
                             child: Column(
+
                                 children :<Widget>[
                                   SizedBox(
                                       height :250,
@@ -161,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children:<Widget>[
-                                        Text("Mot de passe oublie "),
+                                        Text("Mot de passe oublié"),
                                         GestureDetector(onTap:(){
                                           Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgotPasswordPage()
                                           ));
@@ -189,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                           )));
                                         },
-                                          child: Text("Sign Up",style: TextStyle(
+                                          child: Text("S'enregistrer",style: TextStyle(
                                             fontWeight:FontWeight.bold,
                                             fontSize:15,
                                             color : Colors.lightBlue,
@@ -206,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children:<Widget>[
                                         Text("\n"
-                                            "Admin ? Entrez par cette porte : "),
+                                            "Admin ? "),
                                         GestureDetector(onTap:(){
                                           Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginAdminScreen(
 
@@ -247,7 +250,7 @@ void signIn(String email, String password) async {
         await _auth.signInWithEmailAndPassword(email: email, password: password)
             .then((uid) =>
         {
-          Fluttertoast.showToast(msg: "Login successful"),
+          Fluttertoast.showToast(msg: "Connexion réussie"),
 
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => HomeScreen())),

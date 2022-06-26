@@ -18,6 +18,7 @@ import '../model/user_model.dart';
 import '../rendezvous_conseillere/main2.dart';
 import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
+import 'appointment_screen.dart';
 import 'faire_un_don_autre.dart';
 import 'home_screen.dart';
 import 'home_screen_general.dart';
@@ -94,6 +95,8 @@ class _RequestFundsState extends State<RequestFunds> {
      requestModel.uid = user?.uid;
      requestModel.description=descriptionEditingController.text;
      requestModel.montant = moneyFormEditingController.text;
+     requestModel.firstName=loggedInuser.firstname;
+     requestModel.lastName=loggedInuser.lastName;
     requestModel.listFile=s;
     await firebaseFirestore
         .collection("request_users")
@@ -224,7 +227,7 @@ class _RequestFundsState extends State<RequestFunds> {
             ),
             ListTile(
               leading : Icon(Icons.home),
-              title : Text("Home"),
+              title : Text("Menu"),
 
               onTap: ()=> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
@@ -237,10 +240,17 @@ class _RequestFundsState extends State<RequestFunds> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageUser())),
               },
             ),
+            ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Appointment()))
+              },
+            ),
             //salut
             ListTile(
               leading : Icon(Icons.family_restroom),
-              title : Text("Families Contact"),
+              title : Text("Contacter Famille"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FamiliesContact()))
               },
@@ -248,7 +258,7 @@ class _RequestFundsState extends State<RequestFunds> {
 
             ListTile(
               leading : Icon(Icons.contact_phone),
-              title : Text("Contact Student(s)"),
+              title : Text("Contacter un(e) ancien(ne) étudiant(e)"),
 
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ContactStudent()))
@@ -263,7 +273,7 @@ class _RequestFundsState extends State<RequestFunds> {
             // ),
             ListTile(
               leading : Icon(Icons.attach_money),
-              title : Text("Request funds"),
+              title : Text("Demande spéciale"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: ()=>{
@@ -272,21 +282,21 @@ class _RequestFundsState extends State<RequestFunds> {
             ),
             ListTile(
               leading : Icon(Icons.payment),
-              title : Text("Don / Payer événement "),
+              title : Text("Faire un don/Payer événement"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
             ),
             ListTile(
               leading : Icon(Icons.info_outline),
-              title : Text("About us "),
+              title : Text("A propos de nous"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AboutUs()))
               },
             ),
             ListTile(
               leading : Icon(Icons.logout),
-              title : Text("Logout"),
+              title : Text("Se déconnecter"),
               onTap: (){
                 logout(context);
               },
@@ -306,10 +316,10 @@ class _RequestFundsState extends State<RequestFunds> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:<Widget>[
-                            Text("Demande d'argent",
+                            Text("Veuillez remplir ce formulaire en ajoutant les fichiers justificatifs de votre demande",
                               style : TextStyle(
                                 color:Colors.black,
-                                fontSize: 25,
+                                fontSize: 19,
                               ),
 
                             ),
@@ -330,7 +340,7 @@ class _RequestFundsState extends State<RequestFunds> {
           )
       ),
       appBar:AppBar(
-        title :Text("Request Funds"),
+        title :Text("Demande spéciale d'argent"),
       ),
 
 
@@ -351,7 +361,7 @@ class _RequestFundsState extends State<RequestFunds> {
       }
 
       Fluttertoast.showToast(
-          msg: "Vous avez envoye(e) ${countImg.toString()} fichiers");
+          msg: "Vous avez envoyé ${countImg.toString()} fichiers");
 
       Navigator.pop(context);
     }

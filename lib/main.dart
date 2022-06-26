@@ -1,10 +1,6 @@
-import 'package:cnef_app/rendezvous_conseillere/main2.dart';
-import 'package:cnef_app/screens_user/home_screen.dart';
 import 'package:cnef_app/screens_user/home_screen_general.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:cnef_app/screens_user/login_screen.dart';
 
 
 Future<void> main() async{

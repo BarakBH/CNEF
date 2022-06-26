@@ -55,11 +55,11 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
         validator: (value){
           if(value!.isEmpty )
           {
-            return ("Please enter your email");
+            return ("Entrer une adresse email");
 
           }
           if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
-            return("Please Enter a valid email");
+            return("Merci d'entrer une adresse email valide");
 
           }
 
@@ -92,10 +92,10 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
         validator: (value){
           RegExp regex = new RegExp(r'^.{6,}$');
           if( value!.isEmpty){
-            return ("Password is required for login");
+            return ("Le mot de passe est obligatoire");
           }
           if(!regex.hasMatch(value) ){
-            return ("Please Enter Valid Password (Min. 6chars)");
+            return ("Merci d'entrer un mot de passe valide (6 caractères)");
           }
 
         },
@@ -106,7 +106,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.lock),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Password",
+            hintText: "Mot de passe",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -126,8 +126,8 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed:(){
             signIn(emailController.text, passwordController.text);
-        },
-        child : Text("Login", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+            },
+        child : Text("Se connecter", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
       ),
     );
     return Scaffold(
@@ -163,7 +163,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                   Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children:<Widget>[
-                                        Text("Mot de passe oublie "),
+                                        Text("Mot de passe oublié"),
                                         GestureDetector(onTap:(){
                                           Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgotPasswordPage()
                                           ));
@@ -185,13 +185,13 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                   Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children:<Widget>[
-                                        Text("Vous n'avez pas de compte Admin ? "),
+                                        Text("Vous n'avez pas de compte?"),
                                         GestureDetector(onTap:(){
                                           Navigator.push(context,MaterialPageRoute(builder: (context)=>RegistrationAdminScreen(
 
                                           )));
                                         },
-                                          child: Text("Sign Up",style: TextStyle(
+                                          child: Text("S'enregistrer",style: TextStyle(
                                             fontWeight:FontWeight.bold,
                                             fontSize:15,
                                             color : Colors.red,
@@ -225,7 +225,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
       await _auth.signInWithEmailAndPassword(email: email, password: password)
           .then((uid) =>
       {
-        Fluttertoast.showToast(msg: "Login successful Admin"),
+        Fluttertoast.showToast(msg: "Connexion réussie"),
 
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => HomeScreenAdmin())),

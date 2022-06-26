@@ -11,8 +11,10 @@ import 'AboutUs_screen.dart';
 import 'ContactStudent_screen.dart';
 import 'FamiliesContact_screen.dart';
 import 'Requestfund_screen.dart';
+import 'appointment_screen.dart';
 import 'home_screen.dart';
 import 'home_screen_general.dart';
+import 'login_screen.dart';
 class FaireUnDon extends StatefulWidget {
   const FaireUnDon({Key? key}) : super(key: key);
 
@@ -91,7 +93,7 @@ class _FaireUnDonState extends State<FaireUnDon> {
             ),
             ListTile(
               leading : Icon(Icons.home),
-              title : Text("Home"),
+              title : Text("Menu"),
 
               onTap: ()=> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
@@ -106,8 +108,15 @@ class _FaireUnDonState extends State<FaireUnDon> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Appointment()))
+              },
+            ),
+            ListTile(
               leading : Icon(Icons.family_restroom),
-              title : Text("Families Contact"),
+              title : Text("Contacter Famille"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FamiliesContact()))
               },
@@ -115,7 +124,7 @@ class _FaireUnDonState extends State<FaireUnDon> {
 
             ListTile(
               leading : Icon(Icons.contact_phone),
-              title : Text("Contact Student(s)"),
+              title : Text("Contacter un(e) ancien(ne) étudiant(e)"),
 
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ContactStudent()))
@@ -130,7 +139,7 @@ class _FaireUnDonState extends State<FaireUnDon> {
             // ),
             ListTile(
               leading : Icon(Icons.attach_money),
-              title : Text("Request funds"),
+              title : Text("Demande spéciale"),
 
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
@@ -140,14 +149,14 @@ class _FaireUnDonState extends State<FaireUnDon> {
               leading : Icon(Icons.payment),
               iconColor: Colors.red,
               textColor: Colors.red,
-              title : Text("Don / Payer événement "),
+              title : Text("Faire un don/Payer événement"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
             ),
             ListTile(
               leading : Icon(Icons.info_outline),
-              title : Text("About us "),
+              title : Text("A propos de nous"),
 
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AboutUs()))
@@ -155,7 +164,7 @@ class _FaireUnDonState extends State<FaireUnDon> {
             ),
             ListTile(
               leading : Icon(Icons.logout),
-              title : Text("Logout"),
+              title : Text("Se déconnecter"),
               onTap: (){
                 logout(context);
               },
@@ -178,7 +187,7 @@ class _FaireUnDonState extends State<FaireUnDon> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children:<Widget>[
-                          Text("Effectuer un don ou le paiement d'un événement en saisissant le mail suivant : info@cnef.org ainsi que le montant.",
+                          Text("Effectuer un don ou le paiement d'un événement:",
 
                             style : TextStyle(
                               color:Colors.black,

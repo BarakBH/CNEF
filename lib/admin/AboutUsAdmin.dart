@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/admin/add_event.dart';
+import 'package:cnef_app/admin/profile_page_admin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,6 +81,13 @@ class _AboutUsAdminScreenState extends State<AboutUsAdminScreen> {
               {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => HomeScreenAdmin())),
+              },
+            ),
+            ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Edit Profile"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageAdmin())),
               },
             ),
             ListTile(

@@ -29,8 +29,8 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> genderItems = [
-      'Male',
-      'Female',
+      'Homme',
+      'Femme',
     ];
     final firstNameField = TextFormField(
         autofocus: false,
@@ -38,7 +38,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty||!firstNameEditingController.text.contains("FENC26")){
-            return ("FirstName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -50,7 +50,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "First Name",
+            hintText: "Prénom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -64,7 +64,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty || !lastNameEditingController.text.contains("FENC27")){
-            return ("LastName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -76,7 +76,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Last Name",
+            hintText: "Nom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -98,7 +98,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Select Your Gender',
+        'Genre',
         style: TextStyle(fontSize: 14),
       ),
       icon: const Icon(
@@ -125,7 +125,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
           .toList(),
       validator: (value) {
         if (value == null) {
-          return 'Please select gender.';
+          return 'Merci de sélectionner votre genre';
         }
       },
       onChanged: (value) {
@@ -142,7 +142,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         keyboardType: TextInputType.phone,
         validator: (value){
           if(value!.isEmpty){
-            return ("NumberPhone is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
 
@@ -153,7 +153,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.phone),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Number Phone",
+            hintText: "Numéro de téléphone",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -170,13 +170,12 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         validator: (value){
           if(value!.isEmpty)
           {
-            // return ("Please enter your email");
-          Navigator.pop(context);
+            return ("Adresse email");
 
 
           }
           if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
-            return("Please Enter a valid email");
+            return("Merci d'entrer une adresse email valide");
 
           }
           return null;
@@ -205,10 +204,10 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         validator: (value){
           RegExp regex = new RegExp(r'^.{6,}$');
           if(value!.isEmpty){
-            return ("Password is required for login");
+            return ("Le mot de passe est obligatoire");
           }
           if(!regex.hasMatch(value)){
-            return ("Please Enter Valid Password (Min. 6chars)");
+            return ("Merci d'entrer un mot de passe valide (6 caractères)");
           }
 
         },
@@ -218,7 +217,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.lock),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Password",
+            hintText: "Mot de passe",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -234,7 +233,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         {
           if( passwordEditingController.text != value)
           {
-            return "Password don't match";
+            return "Le mot de passe n'est pas identique";
           }
           return null;
         },
@@ -244,7 +243,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.lock),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Confirm Password",
+            hintText: "Confirmation mot de passe",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -263,7 +262,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         onPressed:(){
           signUp(emailEditingController.text,passwordEditingController.text);
         },
-        child : Text("Enregistrer", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+        child : Text("S'enregistrer", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
       ),
     );
     return Scaffold(
@@ -347,7 +346,7 @@ class _RegistrationAdminScreenState extends State<RegistrationAdminScreen> {
         .doc(user.uid)
         .set(userModel.toMap());
 
-    Fluttertoast.showToast(msg: "Account created successfully :)");
+    Fluttertoast.showToast(msg: "Le compte a bien été créé :)");
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginAdminScreen()), (route) => false);
 
   }

@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/admin/add_new_old_student.dart';
+import 'package:cnef_app/admin/profile_page_admin.dart';
+import 'package:cnef_app/model/family_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firestore_search/firestore_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
 
 import '../model/user_model.dart';
 import '../screens_user/home_screen_general.dart';
@@ -12,7 +17,9 @@ import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
 import 'add_event.dart';
 import 'add_new_family.dart';
+import 'all_meetings_view.dart';
 import 'home_screen_admin.dart';
+import 'login_screen_admin.dart';
 
 class AddSomeone extends StatefulWidget {
   const AddSomeone({Key? key}) : super(key: key);
@@ -72,7 +79,7 @@ class _AddSomeoneState extends State<AddSomeone> {
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text("Home"),
+              title: Text("Menu"),
 
               onTap: () =>
               {
@@ -81,8 +88,15 @@ class _AddSomeoneState extends State<AddSomeone> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageAdmin())),
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.web),
-              title: Text("DataBase"),
+              title: Text("Users/Admins"),
 
               onTap: () =>
               {
@@ -92,7 +106,7 @@ class _AddSomeoneState extends State<AddSomeone> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Post"),
+              title: Text("Ajouter un post"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -101,7 +115,7 @@ class _AddSomeoneState extends State<AddSomeone> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Event"),
+              title: Text("Ajouter un événement"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -110,7 +124,7 @@ class _AddSomeoneState extends State<AddSomeone> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Someone"),
+              title: Text("Ajouter ancien étudiant/famille"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: () =>
@@ -120,8 +134,15 @@ class _AddSomeoneState extends State<AddSomeone> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère/Autorisations"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AllMeetingsView()))
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.contact_phone),
-              title: Text("All Requests"),
+              title: Text("Toutes les demandes"),
 
               onTap: () =>
               {
@@ -132,7 +153,7 @@ class _AddSomeoneState extends State<AddSomeone> {
 
             ListTile(
               leading: Icon(Icons.info_outline),
-              title: Text("About us "),
+              title: Text("A propos de nous"),
 
               onTap: () =>
               {
@@ -142,7 +163,7 @@ class _AddSomeoneState extends State<AddSomeone> {
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              title: Text("Se déconnecter"),
               onTap: () {
                 logout(context);
               },
@@ -152,7 +173,7 @@ class _AddSomeoneState extends State<AddSomeone> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
-        title: Text("Add Someone "),
+        title: Text("Ajouter ancien étudiant/famille"),
 
       ),
 
@@ -189,7 +210,83 @@ class _AddSomeoneState extends State<AddSomeone> {
         ],
       ),
 
-     body: Center(),
+        body :
+        FirestoreSearchScaffold(
+          appBarBackgroundColor: Colors.white,
+          firestoreCollectionName: 'family',
+          searchBy: 'lastName',
+          scaffoldBody: Center(),
+          dataListFromSnapshot: FamilyModel().dataListFromSnapshot,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final List<FamilyModel>? dataList = snapshot.data;
+              if (dataList!.isEmpty) {
+                PaginateRefreshedChangeListener refreshChangeListener = PaginateRefreshedChangeListener();
+                return RefreshIndicator(
+                  child: PaginateFirestore(
+                    itemBuilder: (context, documentSnapshots, index) {
+                      final data = documentSnapshots[index].data() as Map?;
+                      return ListTile(
+
+                        title: data==null ? Text('Error in data') : Text("Famille"+data['lastName'],style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        ),
+                        subtitle: data==null?Text('Error in data'): Text( "Location: "+data['location']+"\nNumberphone : "+data['numberPhone']+"\nMax Persons "+data['maxNumberPerson'])
+                        ,
+
+
+                      );
+                    } ,
+                    // orderBy is compulsary to enable pagination
+                    query: FirebaseFirestore.instance.collection('family').orderBy('lastName'),
+                    listeners: [
+                      refreshChangeListener,
+                    ], itemBuilderType: PaginateBuilderType.listView,
+
+                  ),
+                  onRefresh: () async {
+                    refreshChangeListener.refreshed = true;
+                  },
+                );
+              }
+              return ListView.builder(
+                  itemCount: dataList.length,
+                  itemBuilder: (context, index) {
+                    final FamilyModel data = dataList[index];
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          title: Text('Famille ${data.lastName}',style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          subtitle:Text('Location : ${data.location}\nNumberPhone : ${data.numberPhone}\nMaxPersons:${data.maxNumberPerson}',style: TextStyle(fontSize: 15,))
+
+
+                        ),
+                      ],
+                    );
+                  });
+            }
+
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: Text('No Results Returned'),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        )
 
     );
   }

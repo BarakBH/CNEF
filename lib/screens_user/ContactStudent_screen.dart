@@ -15,6 +15,7 @@ import 'dart:developer';
 import '../model/user_model.dart';
 import 'AboutUs_screen.dart';
 import 'Requestfund_screen.dart';
+import 'appointment_screen.dart';
 import 'faire_un_don_autre.dart';
 import 'home_screen.dart';
 List<DocumentSnapshot> ?documents_2;
@@ -82,7 +83,7 @@ class _ContactStudentState extends State<ContactStudent> {
               ),
               ListTile(
                 leading : Icon(Icons.home),
-                title : Text("Home"),
+                title : Text("Menu"),
                 onTap: ()=> {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
                 },
@@ -95,8 +96,15 @@ class _ContactStudentState extends State<ContactStudent> {
                 },
               ),
               ListTile(
+                leading : Icon(Icons.calendar_today),
+                title : Text("RDV conseillère"),
+                onTap: ()=>{
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Appointment()))
+                },
+              ),
+              ListTile(
                 leading : Icon(Icons.family_restroom),
-                title : Text("Families Contact"),
+                title : Text("Contacter Famille"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FamiliesContact()))
                 },
@@ -104,7 +112,7 @@ class _ContactStudentState extends State<ContactStudent> {
 
               ListTile(
                 leading : Icon(Icons.contact_phone),
-                title : Text("Contact Student(s)"),
+                title : Text("Contacter un(e) ancien(ne) étudiant(e)"),
                 iconColor: Colors.red,
                 textColor: Colors.red,
                 onTap: ()=>{
@@ -113,28 +121,28 @@ class _ContactStudentState extends State<ContactStudent> {
               ),
               ListTile(
                 leading : Icon(Icons.attach_money),
-                title : Text("Request funds"),
+                title : Text("Demande spéciale"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
                 },
               ),
               ListTile(
                 leading : Icon(Icons.payment),
-                title : Text("Don / Payer événement "),
+                title : Text("Faire un don/Payer événement"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
                 },
               ),
               ListTile(
                 leading : Icon(Icons.info_outline),
-                title : Text("About us "),
+                title : Text("A propos de nous"),
                 onTap: ()=>{
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AboutUs()))
                 },
               ),
               ListTile(
                 leading : Icon(Icons.logout),
-                title : Text("Logout"),
+                title : Text("Se déconnecter"),
                 onTap: (){
                   logout(context);
                 },
@@ -143,9 +151,10 @@ class _ContactStudentState extends State<ContactStudent> {
           ),
         ),
         appBar:AppBar(
-          title :Text("Contact Student"),
+          title :Text("Contacter un(e) ancien(ne) étudiant(e)"),
         ),
         body : FirestoreSearchScaffold(
+
           appBarBackgroundColor: Colors.white,
           firestoreCollectionName: 'old_student',
           searchBy: 'domaine',
@@ -156,7 +165,7 @@ class _ContactStudentState extends State<ContactStudent> {
               final List<OldStudentModel>? dataList = snapshot.data;
               if (dataList!.isEmpty) {
                 return const Center(
-                  child: Text('Pas de resulat'),
+                  child: Text('Pas de résultat veuillez chercher par thème'),
                 );
               }
               return ListView.builder(
@@ -188,7 +197,7 @@ class _ContactStudentState extends State<ContactStudent> {
             if (snapshot.connectionState == ConnectionState.done) {
               if (!snapshot.hasData) {
                 return const Center(
-                  child: Text('No Results Returned'),
+                  child: Text('Pas de résultat'),
                 );
               }
             }

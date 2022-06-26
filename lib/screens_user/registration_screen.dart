@@ -61,13 +61,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     final List<String> genderItems = [
-      'Male',
-      'Female',
+      'Homme',
+      'Femme',
     ];
     final List<String> statusItems = [
-      'Student',
-      'Jobless',
-      'Employee',
+      'Etudiant',
+      'Sans emploi',
+      'Employé',
     ];
     //first name field
     final firstNameField = TextFormField(
@@ -76,7 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty){
-            return ("FirstName is required for login");
+            return ("Ce champ est obligatoire");
           }
           },
         onSaved: (value) {
@@ -88,7 +88,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "First Name",
+            hintText: "Prénom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -102,7 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty){
-            return ("LastName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -113,7 +113,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Last Name",
+            hintText: "Nom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -135,7 +135,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Select Your Gender',
+        'Genre',
         style: TextStyle(fontSize: 14),
       ),
       icon: const Icon(
@@ -162,7 +162,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           .toList(),
       validator: (value) {
         if (value == null) {
-          return 'Please select gender.';
+          return 'Merci de sélectionner votre genre';
         }
       },
       onChanged: (value) {
@@ -177,7 +177,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final dateBirthField = DateTimePicker(
 
       decoration: InputDecoration(
-        hintText: "DateBirth",
+        hintText: "Date de naissance",
         prefixIcon: Icon(Icons.date_range),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         border: OutlineInputBorder(
@@ -192,7 +192,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       validator: (value){
 
         if(value!.isEmpty){
-          return ("DateBirth is required for login");
+          return ("Ce champ est obligatoire");
         }
       },
       onChanged: (value) {
@@ -205,7 +205,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
     final yearOfAlyahField = DateTimePicker(
       decoration: InputDecoration(
-        hintText: "Year of Alyah",
+        hintText: "Date d'Alyah",
         prefixIcon: Icon(Icons.airplanemode_active),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         border: OutlineInputBorder(
@@ -216,11 +216,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       initialValue: '',
       firstDate: DateTime(1970),
       lastDate: DateTime(2100),
-      dateLabelText: 'Date of your Alyah',
+      dateLabelText: 'Date Alyah',
 
       validator: (value){
         if(value!.isEmpty){
-          return ("YearOfALyah is required for login");
+          return ("Ce champ est obligatoire");
         }
       },
       onChanged: (value) {
@@ -246,7 +246,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Select Your Status',
+        'Statut',
         style: TextStyle(fontSize: 14),
       ),
       icon: const Icon(
@@ -273,7 +273,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           .toList(),
       validator: (value) {
         if (value == null) {
-          return 'Please select gender.';
+          return 'Sélectionner votre statut';
         }
       },
       onChanged: (value) {
@@ -292,7 +292,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.number,
         validator: (value){
           if(value!.isEmpty){
-            return ("ID is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
 
@@ -303,7 +303,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.person),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "ID number ",
+            hintText: "Numéro d'identification",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -318,7 +318,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.phone,
         validator: (value){
           if(value!.isEmpty){
-            return ("NumberPhone is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
 
@@ -329,7 +329,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.phone),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Number Phone",
+            hintText: "Numéro de téléphone",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -346,11 +346,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         validator: (value){
           if(value!.isEmpty)
           {
-            return ("Please enter your email");
+            return ("Adresse email");
 
           }
           if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
-            return("Please Enter a valid email");
+            return("Merci d'entrer une adresse email valide");
 
           }
 
@@ -379,10 +379,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         validator: (value){
           RegExp regex = new RegExp(r'^.{6,}$');
           if(value!.isEmpty){
-            return ("Password is required for login");
+            return ("Ce champ est obligatoire");
           }
           if(!regex.hasMatch(value)){
-            return ("Please Enter Valid Password (Min. 6chars)");
+            return ("Merci d'entrer un mot de passe valide (6 caractères)");
           }
 
         },
@@ -392,7 +392,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.lock),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Password",
+            hintText: "Mot de passe",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -408,7 +408,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         {
           if( passwordEditingController.text != value)
             {
-              return "Password don't match";
+              return "Le mot de passe n'est pas identique";
             }
           return null;
         },
@@ -418,7 +418,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration : InputDecoration(
             prefixIcon: Icon(Icons.lock),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Confirm Password",
+            hintText: "Confirmation mot de passe",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -438,7 +438,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         onPressed:(){
           signUp(emailEditingController.text,passwordEditingController.text);
         },
-        child : Text("Sign Up", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+        child : Text("S'enregistrer", textAlign: TextAlign.center,style:TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
       ),
     );
 
@@ -567,7 +567,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         .doc(user.uid)
           .set(userModel.toMap());
 
-    Fluttertoast.showToast(msg: "Account created successfully :)");
+    Fluttertoast.showToast(msg: "Le compte a bien été créé :)");
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
 
   }

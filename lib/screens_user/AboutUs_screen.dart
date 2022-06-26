@@ -11,6 +11,7 @@ import '../model/user_model.dart';
 import '../rendezvous_conseillere/main2.dart';
 import 'ContactStudent_screen.dart';
 import 'Requestfund_screen.dart';
+import 'appointment_screen.dart';
 import 'faire_un_don_autre.dart';
 import 'home_screen.dart';
 class AboutUs extends StatefulWidget {
@@ -73,7 +74,7 @@ class _AboutUsState extends State<AboutUs> {
             ),
             ListTile(
               leading : Icon(Icons.home),
-              title : Text("Home"),
+              title : Text("Menu"),
 
               onTap: ()=> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen())),
@@ -88,8 +89,15 @@ class _AboutUsState extends State<AboutUs> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Appointment()))
+              },
+            ),
+            ListTile(
               leading : Icon(Icons.family_restroom),
-              title : Text("Families Contact"),
+              title : Text("Contacter Famille"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FamiliesContact()))
               },
@@ -97,22 +105,16 @@ class _AboutUsState extends State<AboutUs> {
 
             ListTile(
               leading : Icon(Icons.contact_phone),
-              title : Text("Contact Student(s)"),
+              title : Text("Contacter un(e) ancien(ne) étudiant(e)"),
 
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ContactStudent()))
               },
             ),
-            // ListTile(
-            //   leading : Icon(Icons.calendar_today),
-            //   title : Text("Calendar"),
-            //   onTap: ()=>{
-            //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> LoadDataFromFireStore()))
-            //   },
-            // ),
+
             ListTile(
               leading : Icon(Icons.attach_money),
-              title : Text("Request funds"),
+              title : Text("Demande spéciale"),
 
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RequestFunds()))
@@ -120,7 +122,7 @@ class _AboutUsState extends State<AboutUs> {
             ),
             ListTile(
               leading : Icon(Icons.payment),
-              title : Text("Don / Payer événement "),
+              title : Text("Faire un don/Payer événement"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> FaireUnDon()))
               },
@@ -128,7 +130,7 @@ class _AboutUsState extends State<AboutUs> {
 
             ListTile(
               leading : Icon(Icons.info_outline),
-              title : Text("About us "),
+              title : Text("A propos de nous"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: ()=>{
@@ -137,7 +139,7 @@ class _AboutUsState extends State<AboutUs> {
             ),
             ListTile(
               leading : Icon(Icons.logout),
-              title : Text("Logout"),
+              title : Text("Se déconnecter"),
               onTap: (){
                 logout(context);
               },
@@ -146,7 +148,7 @@ class _AboutUsState extends State<AboutUs> {
         ),
       ),
       appBar:AppBar(
-        title :Text("About Us"),
+        title :Text("A propos de nous"),
       ),
         body : SingleChildScrollView(
           child : new Container (

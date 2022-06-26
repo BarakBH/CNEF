@@ -5,17 +5,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cnef_app/admin/AboutUsAdmin.dart';
 import 'package:cnef_app/admin/AddPost.dart';
 import 'package:cnef_app/admin/add_someone.dart';
-import 'package:cnef_app/admin/appointment_screen_admin.dart';
+import 'package:cnef_app/admin/all_meetings_view.dart';
 import 'package:cnef_app/admin/event_card.dart';
 import 'package:cnef_app/admin/post_card.dart';
+import 'package:cnef_app/admin/profile_page_admin.dart';
 import 'package:cnef_app/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../chat_states/home_page_chat.dart';
 import '../screens_user/home_screen_general.dart';
 import 'AllRequests.dart';
 import 'DataBaseScreen.dart';
 import 'add_event.dart';
+import 'login_screen_admin.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
   const HomeScreenAdmin({Key? key}) : super(key: key);
@@ -32,16 +35,23 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
         .get()
         .then((value){
       loggedUser = UserModel.fromMap(value.data());
+      check();
       setState(() {
 
       });
     });
+  }
+  void check () async{
+    if(loggedUser.role=='user'){
+      SystemNavigator.pop();
+    }
   }
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -72,7 +82,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             ),
             ListTile(
               leading : Icon(Icons.home),
-              title : Text("Home"),
+              title : Text("Menu"),
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: ()=> {
@@ -80,22 +90,30 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               },
             ),
             ListTile(
+              leading : Icon(Icons.account_circle_rounded),
+              title : Text("Profil"),
+              onTap: ()=> {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProfilePageAdmin())),
+              },
+            ),
+            ListTile(
               leading : Icon(Icons.web),
-              title : Text("DataBase"),
+              title : Text("Users/Admins"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> DataBaseScreen()))
               },
             ),
+
             ListTile(
               leading : Icon(Icons.add),
-              title : Text("Add Post"),
+              title : Text("Ajouter un post"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AddPostScreen()))
               },
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Event"),
+              title: Text("Ajouter un événement"),
               onTap: () =>
               {
                 Navigator.of(context).push(
@@ -104,7 +122,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title: Text("Add Someone"),
+              title: Text("Ajouter ancien étudiant/famille"),
               onTap: () =>
               {
               Navigator.of(context).push(
@@ -112,17 +130,15 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.calendar_today_outlined),
-              title: Text("Rendez-vous-Conseillere"),
-              onTap: () =>
-              {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AppointmentScreen()))
+              leading : Icon(Icons.calendar_today),
+              title : Text("RDV conseillère/Autorisations"),
+              onTap: ()=>{
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AllMeetingsView()))
               },
             ),
             ListTile(
               leading : Icon(Icons.contact_phone),
-              title : Text("All Requests"),
+              title : Text("Toutes les demandes"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AllRequestsScreen()))
               },
@@ -130,14 +146,14 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
 
             ListTile(
               leading : Icon(Icons.info_outline),
-              title : Text("About us "),
+              title : Text("A propos de nous"),
               onTap: ()=>{
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AboutUsAdminScreen()))
               },
             ),
             ListTile(
               leading : Icon(Icons.logout),
-              title : Text("Logout"),
+              title : Text("Se déconnecter"),
               onTap: (){
                 logout(context);
               },
@@ -146,8 +162,28 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         ),
       ),
       appBar:AppBar(
-        backgroundColor:Colors.redAccent,
-        title :Text("Home"),
+        backgroundColor: Colors.red,
+        title :Text("A LA UNE"),
+        centerTitle: true,
+        actions: [
+          Builder(
+            builder: (context) =>
+                TextButton(
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  //tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+
+                  child : Text(
+                    "Evénements",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0
+                    ),
+
+                  ),
+                ),
+          ),
+        ],
 
       ),
       floatingActionButton: FloatingActionButton(
@@ -246,5 +282,6 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => HomeScreenGeneral()));
   }
+
 
 }

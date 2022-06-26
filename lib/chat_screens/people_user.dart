@@ -38,7 +38,7 @@ class PeopleUser extends StatelessWidget {
             return CustomScrollView(
               slivers: [
                 CupertinoSliverNavigationBar(
-                  largeTitle: Text("People"),
+                  largeTitle: Text("Chats"),
                 ),
                 SliverList(
 

@@ -27,6 +27,7 @@ class _ChatDetailState extends State<ChatDetail> {
   final friendName;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   UserModel friendUser = UserModel();
+  User? user = FirebaseAuth.instance.currentUser;
   UserModel currentUser=UserModel();
 
   var chatDocId;
@@ -35,7 +36,16 @@ class _ChatDetailState extends State<ChatDetail> {
   @override
   void initState() {
     super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value){
+      currentUser = UserModel.fromMap(value.data());
+      setState(() {
 
+      });
+    });
     checkUser();
 
   }
@@ -66,6 +76,18 @@ class _ChatDetailState extends State<ChatDetail> {
 
   void sendMessage(String msg) {
     if (msg == '') return;
+    if(msg.contains('OK OK') && currentUser.role=='admin'){
+      var collection = FirebaseFirestore.instance.collection("users");
+      collection
+          .doc(friendUid)
+          .update({'rdv': true});
+    }
+    if(msg.contains('rdv bien passé')&& currentUser.role=='admin'){
+      var collection = FirebaseFirestore.instance.collection("users");
+      collection
+          .doc(friendUid)
+          .update({'rdv': false});
+    }
     chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
       'uid': currentUserId,
