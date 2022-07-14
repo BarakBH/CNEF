@@ -104,13 +104,13 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
   @override
   Widget build(BuildContext context) {
     final List<String> genderItems = [
-      'Male',
-      'Female',
+      'Homme',
+      'Femme',
     ];
     final List<String> statusItems = [
-      'Student',
-      'Jobless',
-      'Employee',
+      'Etudiant',
+      'Sans emploi',
+      'Employé',
     ];
 
     final firstNameField = TextFormField(
@@ -119,7 +119,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty){
-            return ("FirstName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -132,7 +132,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
           helperText: '${loggedInuser.firstname}',
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "First Name",
+            hintText: "Prénom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -146,7 +146,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty){
-            return ("LastName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -158,7 +158,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
             helperText: '${loggedInuser.lastName}',
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Last Name",
+            hintText: "Nom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -181,7 +181,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Select Your Gender',
+        'Genre',
         style: TextStyle(fontSize: 14),
       ),
 
@@ -209,7 +209,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
           .toList(),
       validator: (value) {
         if (value == null) {
-          return 'Please select gender.';
+          return 'Merci de sélectionner votre genre';
         }
       },
       onChanged: (value) {
@@ -225,7 +225,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
 
       decoration: InputDecoration(
         helperText: '${loggedInuser.dateBirth}',
-        hintText: "DateBirth",
+        hintText: "Date de naissance",
         prefixIcon: Icon(Icons.date_range),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         border: OutlineInputBorder(
@@ -254,7 +254,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
     final yearOfAlyahField = DateTimePicker(
       decoration: InputDecoration(
         helperText: '${loggedInuser.yearOfAlyah}',
-        hintText: "Year of Alyah",
+        hintText: "Date Alyah",
         prefixIcon: Icon(Icons.airplanemode_active),
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         border: OutlineInputBorder(
@@ -265,7 +265,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
       initialValue: '',
       firstDate: DateTime(1970),
       lastDate: DateTime(2100),
-      dateLabelText: 'Date of your Alyah',
+      dateLabelText: 'Date Alyah',
 
       validator: (value){
         if(value!.isEmpty){
@@ -296,7 +296,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Select Your Status',
+        'Statut',
         style: TextStyle(fontSize: 14),
       ),
       icon: const Icon(
@@ -354,7 +354,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
             helperText: '${loggedInuser.id}',
             prefixIcon: Icon(Icons.person),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "ID number ",
+            hintText: "Numéro d'identification",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -381,7 +381,7 @@ class _ProfilePageUserState extends State<ProfilePageUser> {
             helperText: '${loggedInuser.numberPhone}',
             prefixIcon: Icon(Icons.phone),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Number Phone",
+            hintText: "Numéro de téléphone",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 

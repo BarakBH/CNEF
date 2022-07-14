@@ -51,13 +51,13 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
     final width = MediaQuery.of(context).size.width;
     const webScreenSize = 600;
     final List<String> genderItems = [
-      'Male',
-      'Female',
+      'Homme',
+      'Femme',
     ];
     final List<String> statusItems = [
-      'Student',
-      'Jobless',
-      'Employee',
+      'Etudiant',
+      'Sans emploi',
+      'Employé',
     ];
 
     final firstNameField = TextFormField(
@@ -66,7 +66,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty){
-            return ("FirstName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -79,7 +79,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
             helperText: '${loggedUser.firstname}',
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "First Name",
+            hintText: "Prénom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -93,7 +93,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
         keyboardType: TextInputType.name,
         validator: (value){
           if(value!.isEmpty){
-            return ("LastName is required for login");
+            return ("Ce champ est obligatoire");
           }
         },
         onSaved: (value) {
@@ -105,7 +105,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
             helperText: '${loggedUser.lastName}',
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Last Name",
+            hintText: "Nom",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
@@ -128,7 +128,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
       ),
       isExpanded: true,
       hint: const Text(
-        'Select Your Gender',
+        'Genre',
         style: TextStyle(fontSize: 14),
       ),
 
@@ -156,7 +156,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
           .toList(),
       validator: (value) {
         if (value == null) {
-          return 'Please select gender.';
+          return 'Merci de sélectionner votre genre';
         }
       },
       onChanged: (value) {
@@ -185,7 +185,7 @@ class _ProfilePageAdminState extends State<ProfilePageAdmin> {
             helperText: '${loggedUser.numberPhone}',
             prefixIcon: Icon(Icons.phone),
             contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Number Phone",
+            hintText: "Numéro de téléphone",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
 
